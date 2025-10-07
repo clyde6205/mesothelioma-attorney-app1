@@ -1,0 +1,210 @@
+import { Metadata } from 'next'
+import { ContactForm } from '@/components/forms/contact-form'
+import { LiveChatWidget } from '@/components/live-chat/live-chat-widget'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Shield,
+  CheckCircle,
+  Star,
+  Award,
+  Users,
+  DollarSign
+} from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'Contact Mesothelioma Attorneys - Free Legal Consultation | 24/7 Support',
+  description: 'Get free legal consultation from top mesothelioma attorneys. Available 24/7. No fees unless we win. Connect with lawyers who have won over $4.8 billion for asbestos victims.',
+  keywords: [
+    'mesothelioma attorney contact',
+    'free mesothelioma consultation',
+    'asbestos lawyer contact',
+    'mesothelioma legal help',
+    'asbestos attorney consultation',
+    'mesothelioma legal advice',
+    'asbestos victim support',
+    'mesothelioma lawyer near me'
+  ],
+  openGraph: {
+    title: 'Contact Mesothelioma Attorneys - Free Legal Consultation',
+    description: 'Get free legal consultation from top mesothelioma attorneys. Available 24/7. No fees unless we win.',
+    images: [
+      {
+        url: '/images/contact-lawyers-4k.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Contact mesothelioma attorneys for free consultation',
+      },
+    ],
+  },
+}
+
+export default function ContactPage() {
+  const features = [
+    {
+      icon: Phone,
+      title: '24/7 Support',
+      description: 'Our mesothelioma attorneys are available around the clock for urgent cases'
+    },
+    {
+      icon: Shield,
+      title: 'No Fees Unless We Win',
+      description: 'Free consultation with no upfront costs. We only get paid if we win your case'
+    },
+    {
+      icon: Award,
+      title: '$4.8B+ Won',
+      description: 'Proven track record of securing maximum compensation for asbestos victims'
+    },
+    {
+      icon: Users,
+      title: 'Expert Network',
+      description: 'Connect with specialized mesothelioma attorneys nationwide'
+    }
+  ]
+  const testimonials = [
+    {
+      name: 'Robert M.',
+      location: 'California',
+      text: 'The attorneys responded within hours and got me a $2.3M settlement. Professional and caring throughout the entire process.',
+      amount: '$2.3M Settlement',
+      rating: 5
+    },
+    {
+      name: 'Sarah K.',
+      location: 'Texas',
+      text: 'Free consultation that led to a successful case. They handled everything professionally and got results.',
+      amount: '$1.8M Settlement',
+      rating: 5
+    },
+    {
+      name: 'Michael L.',
+      location: 'Florida',
+      text: '24/7 support when I needed it most. The attorneys were always available and fought hard for my family.',
+      amount: '$3.1M Settlement',
+      rating: 5
+    }
+  ]
+  const contactMethods = [
+    {
+      method: 'Phone',
+      value: '1-800-MESO-HELP',
+      description: '24/7 Free Consultation',
+      icon: Phone,
+      action: 'tel:1-800-637-6435'
+    },
+    {
+      method: 'Email',
+      value: 'help@mesotheliomaattorney.app',
+      description: 'Response within 2 hours',
+      icon: Mail,
+      action: 'mailto:help@mesotheliomaattorney.app'
+    },
+    {
+      method: 'Live Chat',
+      value: 'Available Now',
+      description: 'Instant messaging support',
+      icon: Clock,
+      action: '#chat'
+    },
+    {
+      method: 'WhatsApp',
+      value: '+1 (555) MESO-HELP',
+      description: 'Quick response guaranteed',
+      icon: Phone,
+      action: 'https://wa.me/15551234567'
+    }
+  ]
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <Badge className="mb-6 bg-blue-500/20 text-blue-100 border-blue-400/30">
+              🚨 Urgent Cases Welcome
+            </Badge>
+           
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Contact Our <span className="text-yellow-400">Mesothelioma</span><br />
+              Attorneys Today
+            </h1>
+           
+            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto">
+              Get <strong>free legal consultation</strong> from attorneys who have won over
+              <strong> $4.8 billion</strong> for mesothelioma victims. <strong>Available 24/7, no fees unless we win.</strong>
+            </p>
+           
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-yellow-400">24/7</div>
+                <div className="text-sm text-blue-200">Support</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-yellow-400">$4.8B+</div>
+                <div className="text-sm text-blue-200">Won</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-yellow-400">0</div>
+                <div className="text-sm text-blue-200">Upfront Fees</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-yellow-400">95%</div>
+                <div className="text-sm text-blue-200">Success Rate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Contact Methods */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Multiple Ways to <span className="text-blue-600">Contact Us</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Choose the method that works best for you. All consultations are completely free.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {contactMethods.map((method, index) => (
+              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex justify-center mb-4">
+                    <div className="p-3 bg-blue-100 rounded-full">
+                      <method.icon className="h-6 w-6 text-blue-600" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-lg">{method.method}</CardTitle>
+                  <CardDescription className="text-gray-600">
+                    {method.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <a
+                    href={method.action}
+                    className="text-blue-600 font-semibold hover:text-blue-800 transition-colors"
+                  >
+                    {method.value}
+                  </a>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Main Contact Form */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Free <span className="text-blue-600">Legal Consultation</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Fill
