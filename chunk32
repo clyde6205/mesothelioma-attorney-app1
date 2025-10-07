@@ -1,0 +1,19 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { PayPalService } from '@/lib/paypal'
+import { headers } from 'next/headers'
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const headersList = headers()
+    const paypalService = new PayPalService()
+    await paypalService.handleWebhook(body, headersList)
+    return NextResponse.json({ received: true })
+  } catch (error) {
+    console.error('PayPal webhook error:', error)
+    return NextResponse.json(
+      { error: 'Webhook error' },
+      { status: 400 }
+    )
+  }
+}
