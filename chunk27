@@ -1,0 +1,210 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { WhatsAppService } from '@/lib/whatsapp'
+import { prisma } from '@/lib/prisma'
+
+const whatsappService = new WhatsAppService()
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url)
+  const mode = searchParams.get('hub.mode')
+  const token = searchParams.get('hub.verify_token')
+  const challenge = searchParams.get('hub.challenge')
+  // Verify webhook
+  if (mode === 'subscribe' && token === process.env.WHATSAPP_VERIFY_TOKEN) {
+    console.log('WhatsApp webhook verified')
+    return new NextResponse(challenge, { status: 200 })
+  }
+  return new NextResponse('Forbidden', { status: 403 })
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.text()
+    const signature = request.headers.get('x-hub-signature-256') || ''
+    // Verify webhook signature
+    if (!whatsappService.verifyWebhookSignature(body, signature)) {
+      console.error('Invalid WhatsApp webhook signature')
+      return new NextResponse('Unauthorized', { status: 401 })
+    }
+    const webhookData = JSON.parse(body)
+   
+    // Handle incoming messages
+    await whatsappService.handleIncomingMessage(webhookData)
+   
+    // Process webhook data
+    const entry = webhookData.entry?.[0]
+    const changes = entry?.changes?.[0]
+    const value = changes?.value
+    if (value?.messages) {
+      for (const message of value.messages) {
+        await processIncomingMessage(message, value)
+      }
+    }
+    if (value?.statuses) {
+      for (const status of value.statuses) {
+        await updateMessageStatus(status)
+      }
+    }
+    return new NextResponse('OK', { status: 200 })
+  } catch (error) {
+    console.error('WhatsApp webhook error:', error)
+    return new NextResponse('Internal Server Error', { status: 500 })
+  }
+}
+
+async function processIncomingMessage(message: any, value: any) {
+  try {
+    const phone = message.from
+    const messageId = message.id
+    const timestamp = message.timestamp
+    const messageType = message.type
+    // Find or create lead
+    let lead = await prisma.lead.findFirst({
+      where: {
+        OR: [
+          { phone: { contains: phone.replace('+', '') } },
+          { whatsappNumber: phone }
+        ]
+      }
+    })
+    if (!lead) {
+      // Create new lead from WhatsApp
+      lead = await prisma.lead.create({
+        data: {
+          name: 'WhatsApp User',
+          email: `${phone}@whatsapp.user`,
+          phone: phone.replace('+', ''),
+          state: 'Unknown',
+          source: 'whatsapp',
+          whatsappNumber: phone,
+          whatsappOptIn: true,
+          consentGiven: true
+        }
+      })
+    } else {
+      // Update existing lead
+      await prisma.lead.update({
+        where: { id: lead.id },
+        data: {
+          whatsappNumber: phone,
+          whatsappOptIn: true,
+          lastContacted: new Date()
+        }
+      })
+    }
+    // Save message to database
+    let messageContent = ''
+    let channel = 'WHATSAPP'
+    switch (messageType) {
+      case 'text':
+        messageContent = message.text.body
+        break
+      case 'button':
+        messageContent = `Button response: ${message.button.payload}`
+        break
+      case 'interactive':
+        if (message.interactive.type === 'list_reply') {
+          messageContent = `List selection: ${message.interactive.list_reply.id}`
+        } else if (message.interactive.type === 'button_reply') {
+          messageContent = `Button reply: ${message.interactive.button_reply.id}`
+        }
+        break
+      case 'image':
+        messageContent = 'Image received'
+        break
+      case 'document':
+        messageContent = 'Document received'
+        break
+      default:
+        messageContent = `${messageType} message received`
+    }
+    await prisma.message.create({
+      data: {
+        leadId: lead.id,
+        content: messageContent,
+        sender: 'LEAD',
+        channel: channel,
+        status: 'DELIVERED'
+      }
+    })
+    // Update lead contact count
+    await prisma.lead.update({
+      where: { id: lead.id },
+      data: {
+        contactCount: { increment: 1 }
+      }
+    })
+    // Auto-respond based on message content
+    await handleAutoResponse(phone, messageContent, lead)
+  } catch (error) {
+    console.error('Error processing incoming WhatsApp message:', error)
+  }
+}
+
+async function handleAutoResponse(phone: string, content: string, lead: any) {
+  const lowerContent = content.toLowerCase()
+  // Check if user wants to join community
+  if (lowerContent.includes('community') || lowerContent.includes('support group')) {
+    const whatsappService = new WhatsAppService()
+    await whatsappService.sendCommunityInvite(phone, lead.name)
+  }
+  // Check if user wants legal help
+  if (lowerContent.includes('lawyer') || lowerContent.includes('attorney') || lowerContent.includes('legal')) {
+    const whatsappService = new WhatsAppService()
+    await whatsappService.sendMessage({
+      to: phone,
+      type: 'text',
+      text: {
+        body: `Hi ${lead.name}! I'll connect you with our top mesothelioma attorneys right away.
+Our lawyers have won over $4.8 billion for mesothelioma victims. They work on a contingency basis - no fees unless they win your case.
+Please reply with:
+1. Your state
+2. Year of asbestos exposure (if known)
+3. Your preferred contact time
+I'll have an attorney contact you within 24 hours.`
+      }
+    })
+  }
+  // Check if user is providing contact information
+  if (lowerContent.includes('california') || lowerContent.includes('texas') || lowerContent.includes('florida') ||
+      lowerContent.includes('new york') || lowerContent.includes('illinois')) {
+    const whatsappService = new WhatsAppService()
+    await whatsappService.sendMessage({
+      to: phone,
+      type: 'text',
+      text: {
+        body: `Perfect! I'm matching you with mesothelioma attorneys in your area.
+Our lawyers will:
+✅ Review your case for free
+✅ Handle all legal paperwork
+✅ Fight for maximum compensation
+✅ Only charge if they win
+You'll receive a call from our attorney network within 24 hours.
+In the meantime, you can also visit our website for more resources: https://mesotheliomaattorney.app`
+      }
+    })
+    // Update lead status
+    await prisma.lead.update({
+      where: { id: lead.id },
+      data: {
+        status: 'CONTACTED',
+        notes: 'WhatsApp auto-response sent, waiting for attorney contact'
+      }
+    })
+  }
+}
+
+async function updateMessageStatus(status: any) {
+  try {
+    // Update message status in database
+    const message = await prisma.message.findFirst({
+      where: {
+        // You might need to store WhatsApp message ID in your Message model
+        // For now, we'll just log the status
+      }
+    })
+    console.log('Message status update:', status)
+  } catch (error) {
+    console.error('Error updating message status:', error)
+  }
+}
