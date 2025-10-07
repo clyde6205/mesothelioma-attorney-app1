@@ -1,0 +1,271 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+
+model Lead {
+  id String @id @default(cuid())
+  name String
+  email String
+  phone String
+  state String
+  exposureYear Int?
+  exposureType String?
+  symptoms String?
+  riskScore Int @default(0)
+  status LeadStatus @default(NEW)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  // Marketing fields
+  source String @default("website")
+  campaign String?
+  utmSource String?
+  utmMedium String?
+  utmCampaign String?
+ 
+  // Legal compliance
+  consentGiven Boolean @default(false)
+  gdprConsent Boolean @default(false)
+  hipaaConsent Boolean @default(false)
+ 
+  // Contact tracking
+  lastContacted DateTime?
+  contactCount Int @default(0)
+  notes String?
+ 
+  // WhatsApp integration
+  whatsappNumber String?
+  whatsappOptIn Boolean @default(false)
+ 
+  // Relationships
+  messages Message[]
+  payments Payment[]
+  consultations Consultation[]
+ 
+  @@map("leads")
+}
+
+model Message {
+  id String @id @default(cuid())
+  leadId String
+  content String
+  sender MessageSender
+  channel MessageChannel
+  status MessageStatus @default(SENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+ 
+  @@map("messages")
+}
+
+model Payment {
+  id String @id @default(cuid())
+  leadId String
+  amount Float
+  currency String @default("USD")
+  provider PaymentProvider
+  providerId String
+  status PaymentStatus @default(PENDING)
+  description String?
+  metadata String? @db.Text // JSON string
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+ 
+  @@map("payments")
+}
+
+model Consultation {
+  id String @id @default(cuid())
+  leadId String
+  scheduledAt DateTime
+  duration Int @default(60) // minutes
+  status ConsultationStatus @default(SCHEDULED)
+  notes String?
+  recording String? // URL to recording
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+ 
+  @@map("consultations")
+}
+
+model Lawyer {
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  phone String
+  firm String?
+  state String
+  specialties String[] // Array of specialties
+  rating Float @default(0)
+  casesWon Int @default(0)
+  yearsExperience Int @default(0)
+  bio String?
+  image String?
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  @@map("lawyers")
+}
+
+model BlogPost {
+  id String @id @default(cuid())
+  slug String @unique
+  title String
+  content String
+  excerpt String?
+  published Boolean @default(false)
+  publishedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  // SEO fields
+  metaTitle String?
+  metaDescription String?
+  keywords String?
+ 
+  // Author info
+  authorName String?
+  authorEmail String?
+ 
+  @@map("blog_posts")
+}
+
+model User {
+  id String @id @default(cuid())
+  name String?
+  email String @unique
+  emailVerified DateTime?
+  image String?
+  role UserRole @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  accounts Account[]
+  sessions Session[]
+ 
+  @@map("users")
+}
+
+model Account {
+  id String @id @default(cuid())
+  userId String
+  type String
+  provider String
+  providerAccountId String
+  refresh_token String? @db.Text
+  access_token String? @db.Text
+  expires_at Int?
+  token_type String?
+  scope String?
+  id_token String? @db.Text
+  session_state String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id String @id @default(cuid())
+  sessionToken String @unique
+  userId String
+  expires DateTime
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token String @unique
+  expires DateTime
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model ChatRoom {
+  id String @id @default(cuid())
+  leadId String @unique
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  @@map("chat_rooms")
+}
+
+model WhatsAppContact {
+  id String @id @default(cuid())
+  phone String @unique
+  name String?
+  optIn Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  @@map("whatsapp_contacts")
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  SOLD
+  REJECTED
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  LAWYER
+}
+
+enum MessageSender {
+  LEAD
+  ADMIN
+  SYSTEM
+}
+
+enum MessageChannel {
+  WEBSITE
+  WHATSAPP
+  EMAIL
+  SMS
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+enum PaymentProvider {
+  STRIPE
+  PAYPAL
+  SQUARE
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum ConsultationStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
