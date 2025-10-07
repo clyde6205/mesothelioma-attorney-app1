@@ -1,0 +1,240 @@
+// PayPal integration for mesothelioma attorney app
+import axios from 'axios'
+
+export interface PayPalOrderData {
+  amount: number
+  currency?: string
+  leadId: string
+  description?: string
+  returnUrl?: string
+  cancelUrl?: string
+}
+
+export interface PayPalOrder {
+  id: string
+  status: string
+  links: Array<{
+    href: string
+    rel: string
+    method: string
+  }>
+}
+
+export interface PayPalPaymentData {
+  orderId: string
+  leadId: string
+  amount: number
+  currency: string
+  status: 'COMPLETED' | 'PENDING' | 'FAILED' | 'CANCELLED'
+  transactionId?: string
+  payerEmail?: string
+}
+
+export class PayPalService {
+  private clientId: string
+  private clientSecret: string
+  private baseUrl: string
+  private accessToken: string | null = null
+  private tokenExpiry: number = 0
+  constructor() {
+    this.clientId = process.env.PAYPAL_CLIENT_ID || ''
+    this.clientSecret = process.env.PAYPAL_CLIENT_SECRET || ''
+    this.baseUrl = process.env.NODE_ENV === 'production'
+      ? 'https://api-m.paypal.com'
+      : 'https://api-m.sandbox.paypal.com'
+  }
+  private async getAccessToken(): Promise<string> {
+    if (this.accessToken && Date.now() < this.tokenExpiry) {
+      return this.accessToken
+    }
+    try {
+      const response = await axios.post(
+        `${this.baseUrl}/v1/oauth2/token`,
+        'grant_type=client_credentials',
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`
+          }
+        }
+      )
+      this.accessToken = response.data.access_token
+      this.tokenExpiry = Date.now() + (response.data.expires_in * 1000) - 60000 // 1 minute buffer
+      return this.accessToken
+    } catch (error) {
+      console.error('Error getting PayPal access token:', error)
+      throw new Error('Failed to get PayPal access token')
+    }
+  }
+  async createOrder(data: PayPalOrderData): Promise<PayPalOrder> {
+    try {
+      const accessToken = await this.getAccessToken()
+     
+      const orderData = {
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: data.currency || 'USD',
+              value: data.amount.toFixed(2)
+            },
+            description: data.description || 'Mesothelioma Legal Consultation Payment',
+            custom_id: data.leadId,
+            soft_descriptor: 'MESO-ATTORNEY'
+          }
+        ],
+        application_context: {
+          brand_name: 'Mesothelioma Attorney',
+          landing_page: 'BILLING',
+          user_action: 'PAY_NOW',
+          return_url: data.returnUrl || `${process.env.NEXT_PUBLIC_APP_URL}/payment/success`,
+          cancel_url: data.cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL}/payment/cancel`
+        }
+      }
+      const response = await axios.post(
+        `${this.baseUrl}/v2/checkout/orders`,
+        orderData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'PayPal-Request-Id': `meso-${data.leadId}-${Date.now()}`
+          }
+        }
+      )
+      return response.data
+    } catch (error) {
+      console.error('Error creating PayPal order:', error)
+      throw new Error('Failed to create PayPal order')
+    }
+  }
+  async captureOrder(orderId: string): Promise<PayPalPaymentData> {
+    try {
+      const accessToken = await this.getAccessToken()
+      const response = await axios.post(
+        `${this.baseUrl}/v2/checkout/orders/${orderId}/capture`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'PayPal-Request-Id': `capture-${orderId}-${Date.now()}`
+          }
+        }
+      )
+      const order = response.data
+      const purchaseUnit = order.purchase_units[0]
+      const capture = purchaseUnit.payments.captures[0]
+      const payer = order.payer
+      return {
+        orderId: order.id,
+        leadId: purchaseUnit.custom_id,
+        amount: parseFloat(capture.amount.value),
+        currency: capture.amount.currency_code,
+        status: 'COMPLETED',
+        transactionId: capture.id,
+        payerEmail: payer.email_address
+      }
+    } catch (error) {
+      console.error('Error capturing PayPal order:', error)
+      throw new Error('Failed to capture PayPal order')
+    }
+  }
+  async getOrderDetails(orderId: string): Promise<any> {
+    try {
+      const accessToken = await this.getAccessToken()
+      const response = await axios.get(
+        `${this.baseUrl}/v2/checkout/orders/${orderId}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        }
+      )
+      return response.data
+    } catch (error) {
+      console.error('Error getting PayPal order details:', error)
+      throw new Error('Failed to get PayPal order details')
+    }
+  }
+  async createSubscription(data: {
+    leadId: string
+    planId: string
+    customerEmail?: string
+    customerName?: string
+  }): Promise<{ subscriptionId: string; approvalUrl: string }> {
+    try {
+      const accessToken = await this.getAccessToken()
+      const subscriptionData = {
+        plan_id: data.planId,
+        subscriber: {
+          email_address: data.customerEmail,
+          name: {
+            given_name: data.customerName?.split(' ')[0] || 'Customer',
+            surname: data.customerName?.split(' ').slice(1).join(' ') || 'Name'
+          }
+        },
+        application_context: {
+          brand_name: 'Mesothelioma Attorney',
+          locale: 'en-US',
+          shipping_preference: 'NO_SHIPPING',
+          user_action: 'SUBSCRIBE_NOW',
+          payment_method: {
+            payer_selected: 'PAYPAL',
+            paypal_preferred: 'IMMEDIATE_PAYMENT_REQUIRED'
+          },
+          return_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscription/success`,
+          cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscription/cancel`
+        },
+        custom_id: data.leadId
+      }
+      const response = await axios.post(
+        `${this.baseUrl}/v1/billing/subscriptions`,
+        subscriptionData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'PayPal-Request-Id': `sub-${data.leadId}-${Date.now()}`
+          }
+        }
+      )
+      const subscription = response.data
+      const approvalUrl = subscription.links.find((link: any) => link.rel === 'approve')?.href
+      return {
+        subscriptionId: subscription.id,
+        approvalUrl: approvalUrl || ''
+      }
+    } catch (error) {
+      console.error('Error creating PayPal subscription:', error)
+      throw new Error('Failed to create PayPal subscription')
+    }
+  }
+  async getSubscriptionDetails(subscriptionId: string): Promise<any> {
+    try {
+      const accessToken = await this.getAccessToken()
+      const response = await axios.get(
+        `${this.baseUrl}/v1/billing/subscriptions/${subscriptionId}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        }
+      )
+      return response.data
+    } catch (error) {
+      console.error('Error getting PayPal subscription details:', error)
+      throw new Error('Failed to get PayPal subscription details')
+    }
+  }
+  async cancelSubscription(subscriptionId: string, reason?: string): Promise<void> {
+    try {
+      const accessToken = await this.getAccessToken()
+      await axios.post(
+        `${this.baseUrl}/v1/billing/subscriptions/${subscriptionId}/cancel`,
+        {
+          reason: reason || 'Customer requested cancellation'
+        },
+        {
+          headers: {
+            'Content-Type':
