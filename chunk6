@@ -1,0 +1,144 @@
+import Link from 'next/link'
+import { Phone, Mail, MapPin, Clock } from 'lucide-react'
+
+export function Footer() {
+  const currentYear = new Date().getFullYear()
+  const footerLinks = {
+    legal: [
+      { name: 'Asbestos Exposure Guide', href: '/asbestos-exposure' },
+      { name: 'Find a Lawyer', href: '/find-lawyer' },
+      { name: 'Mesothelioma Resources', href: '/resources' },
+      { name: 'Legal Process', href: '/resources/legal-process' },
+    ],
+    support: [
+      { name: 'Contact Us', href: '/contact' },
+      { name: 'Free Consultation', href: '/contact' },
+      { name: 'FAQ', href: '/resources/faq' },
+      { name: 'Privacy Policy', href: '/privacy' },
+    ],
+    resources: [
+      { name: 'Mesothelioma Symptoms', href: '/resources/mesothelioma-symptoms' },
+      { name: 'Asbestos Types', href: '/resources/asbestos-types' },
+      { name: 'Treatment Options', href: '/resources/treatment-options' },
+      { name: 'Settlement Information', href: '/resources/settlement-guide' },
+    ],
+  }
+  return (
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="lg:col-span-1">
+            <div className="flex items-center mb-4">
+              <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">MA</span>
+              </div>
+              <span className="ml-2 text-xl font-bold">
+                MesotheliomaAttorney.App
+              </span>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Connecting mesothelioma and asbestos victims with experienced attorneys
+              nationwide. Get the legal help you deserve.
+            </p>
+           
+            {/* Contact Info */}
+            <div className="space-y-2">
+              <div className="flex items-center text-sm text-gray-300">
+                <Phone className="h-4 w-4 mr-2" />
+                <span>1-800-MESO-HELP</span>
+              </div>
+              <div className="flex items-center text-sm text-gray-300">
+                <Mail className="h-4 w-4 mr-2" />
+                <span>help@mesotheliomaattorney.app</span>
+              </div>
+              <div className="flex items-center text-sm text-gray-300">
+                <Clock className="h-4 w-4 mr-2" />
+                <span>24/7 Free Consultation</span>
+              </div>
+            </div>
+          </div>
+          {/* Legal Services */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Legal Services</h3>
+            <ul className="space-y-2">
+              {footerLinks.legal.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Support */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Support</h3>
+            <ul className="space-y-2">
+              {footerLinks.support.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Resources */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Resources</h3>
+            <ul className="space-y-2">
+              {footerLinks.resources.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        {/* Bottom Section */}
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-sm text-gray-400 mb-4 md:mb-0">
+              © {currentYear} MesotheliomaAttorney.App. All rights reserved.
+            </div>
+           
+            <div className="flex space-x-6 text-sm">
+              <Link href="/privacy" className="text-gray-400 hover:text-white">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-gray-400 hover:text-white">
+                Terms of Service
+              </Link>
+              <Link href="/disclaimer" className="text-gray-400 hover:text-white">
+                Legal Disclaimer
+              </Link>
+            </div>
+          </div>
+         
+          {/* Legal Disclaimer */}
+          <div className="mt-4 p-4 bg-gray-800 rounded-lg">
+            <p className="text-xs text-gray-400 leading-relaxed">
+              <strong>Legal Disclaimer:</strong> This website is for informational purposes only
+              and does not constitute legal advice. No attorney-client relationship is formed
+              until you sign a retainer agreement. Results may vary depending on the facts of
+              your case. This is an attorney referral service, not a law firm. We connect you
+              with qualified attorneys in your area who may be able to help with your case.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
+}
