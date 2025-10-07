@@ -1,0 +1,413 @@
+import { Metadata } from 'next'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  BookOpen,
+  FileText,
+  Users,
+  Calendar,
+  Clock,
+  ArrowRight,
+  Search,
+  Filter,
+  TrendingUp,
+  Award,
+  Heart,
+  Shield,
+  DollarSign,
+  Scale,
+  Phone,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  Download,
+  ExternalLink
+} from 'lucide-react'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Mesothelioma Resources & Legal Guides | Complete Asbestos Information Center',
+  description: 'Comprehensive mesothelioma resources, legal guides, and asbestos information. Get expert insights on symptoms, treatment, legal rights, and compensation for asbestos victims.',
+  keywords: [
+    'mesothelioma resources',
+    'asbestos legal guide',
+    'mesothelioma information',
+    'asbestos symptoms guide',
+    'mesothelioma treatment options',
+    'asbestos legal rights',
+    'mesothelioma compensation guide',
+    'asbestos exposure information',
+    'mesothelioma legal help',
+    'asbestos victim resources'
+  ],
+  openGraph: {
+    title: 'Mesothelioma Resources & Legal Guides',
+    description: 'Comprehensive mesothelioma resources, legal guides, and asbestos information for victims and families.',
+    images: [
+      {
+        url: '/images/mesothelioma-resources-4k.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Mesothelioma resources and legal guides',
+      },
+    ],
+  },
+}
+
+export default function ResourcesPage() {
+  const featuredResources = [
+    {
+      id: 1,
+      title: 'Complete Mesothelioma Legal Guide 2024',
+      description: 'Everything you need to know about mesothelioma lawsuits, compensation, and legal rights. Updated for 2024.',
+      category: 'Legal Guide',
+      readTime: '15 min read',
+      date: '2024-01-15',
+      image: '/images/legal-guide-2024.jpg',
+      tags: ['Legal Rights', 'Compensation', 'Lawsuits'],
+      featured: true
+    },
+    {
+      id: 2,
+      title: 'Asbestos Exposure Symptoms Timeline',
+      description: 'Understanding when and how asbestos symptoms develop over time. Critical information for early detection.',
+      category: 'Medical Information',
+      readTime: '8 min read',
+      date: '2024-01-12',
+      image: '/images/symptoms-timeline.jpg',
+      tags: ['Symptoms', 'Timeline', 'Early Detection'],
+      featured: true
+    },
+    {
+      id: 3,
+      title: 'Mesothelioma Treatment Options & Costs',
+      description: 'Comprehensive guide to mesothelioma treatments, costs, and insurance coverage options.',
+      category: 'Treatment Guide',
+      readTime: '12 min read',
+      date: '2024-01-10',
+      image: '/images/treatment-options.jpg',
+      tags: ['Treatment', 'Costs', 'Insurance'],
+      featured: true
+    }
+  ]
+  const resourceCategories = [
+    {
+      icon: Scale,
+      title: 'Legal Resources',
+      description: 'Comprehensive legal guides and information',
+      count: 25,
+      color: 'blue',
+      resources: [
+        'Mesothelioma Lawsuit Guide',
+        'Asbestos Trust Fund Claims',
+        'Workers Compensation Rights',
+        'Statute of Limitations',
+        'Legal Process Overview',
+        'Choosing an Attorney',
+        'Settlement vs Trial',
+        'Wrongful Death Claims'
+      ]
+    },
+    {
+      icon: Heart,
+      title: 'Medical Information',
+      description: 'Health and treatment resources',
+      count: 18,
+      color: 'red',
+      resources: [
+        'Mesothelioma Types',
+        'Diagnosis Process',
+        'Treatment Options',
+        'Clinical Trials',
+        'Second Opinions',
+        'Palliative Care',
+        'Coping Strategies',
+        'Support Groups'
+      ]
+    },
+    {
+      icon: Shield,
+      title: 'Financial Help',
+      description: 'Compensation and financial assistance',
+      count: 12,
+      color: 'green',
+      resources: [
+        'Compensation Types',
+        'Trust Fund Claims',
+        'VA Benefits',
+        'Social Security',
+        'Medical Bills Help',
+        'Lost Wages Recovery',
+        'Funeral Costs',
+        'Family Support'
+      ]
+    },
+    {
+      icon: Users,
+      title: 'Family Support',
+      description: 'Resources for families and caregivers',
+      count: 15,
+      color: 'purple',
+      resources: [
+        'Caregiver Guide',
+        'Family Rights',
+        'Children Support',
+        'Grief Counseling',
+        'Financial Planning',
+        'Legal Documents',
+        'Healthcare Proxy',
+        'End-of-Life Planning'
+      ]
+    }
+  ]
+  const latestArticles = [
+    {
+      title: '2024 Mesothelioma Settlement Amounts: What to Expect',
+      excerpt: 'Updated settlement data and factors that affect mesothelioma compensation amounts in 2024.',
+      category: 'Legal News',
+      date: '2024-01-20',
+      readTime: '6 min',
+      tags: ['Settlements', '2024', 'Compensation']
+    },
+    {
+      title: 'Secondary Asbestos Exposure: Legal Rights for Family Members',
+      excerpt: 'Understanding your legal rights if you developed mesothelioma from secondary asbestos exposure.',
+      category: 'Legal Rights',
+      date: '2024-01-18',
+      readTime: '7 min',
+      tags: ['Secondary Exposure', 'Family Rights', 'Legal Help']
+    },
+    {
+      title: 'Mesothelioma Clinical Trials: New Hope for Treatment',
+      excerpt: 'Latest developments in mesothelioma treatment research and how to participate in clinical trials.',
+      category: 'Medical News',
+      date: '2024-01-16',
+      readTime: '9 min',
+      tags: ['Clinical Trials', 'Treatment', 'Research']
+    },
+    {
+      title: 'Asbestos in the Workplace: Employer Liability Laws',
+      excerpt: 'Understanding employer responsibility for asbestos exposure and workplace safety violations.',
+      category: 'Legal Information',
+      date: '2024-01-14',
+      readTime: '8 min',
+      tags: ['Workplace', 'Employer Liability', 'Safety']
+    },
+    {
+      title: 'Mesothelioma Veterans Benefits: Complete Guide',
+      excerpt: 'Comprehensive guide to VA benefits for veterans with mesothelioma and asbestos-related diseases.',
+      category: 'Veterans Benefits',
+      date: '2024-01-12',
+      readTime: '10 min',
+      tags: ['Veterans', 'VA Benefits', 'Military']
+    },
+    {
+      title: 'Choosing the Right Mesothelioma Attorney: What to Look For',
+      excerpt: 'Essential factors to consider when selecting a mesothelioma attorney for your case.',
+      category: 'Legal Advice',
+      date: '2024-01-10',
+      readTime: '5 min',
+      tags: ['Attorney Selection', 'Legal Help', 'Tips']
+    }
+  ]
+  const quickLinks = [
+    {
+      title: 'Free Legal Consultation',
+      description: 'Get a free case evaluation from experienced mesothelioma attorneys',
+      icon: Phone,
+      link: '/contact',
+      color: 'bg-blue-600 hover:bg-blue-700'
+    },
+    {
+      title: 'Find a Lawyer',
+      description: 'Connect with mesothelioma attorneys in your area',
+      icon: Users,
+      link: '/find-lawyer',
+      color: 'bg-green-600 hover:bg-green-700'
+    },
+    {
+      title: 'Asbestos Exposure Guide',
+      description: 'Learn about asbestos exposure risks and symptoms',
+      icon: AlertTriangle,
+      link: '/asbestos-exposure',
+      color: 'bg-red-600 hover:bg-red-700'
+    },
+    {
+      title: 'Symptom Checker',
+      description: 'Take our free mesothelioma symptom assessment',
+      icon: CheckCircle,
+      link: '/quiz',
+      color: 'bg-purple-600 hover:bg-purple-700'
+    }
+  ]
+  const downloadableResources = [
+    {
+      title: 'Mesothelioma Legal Rights Checklist',
+      description: 'PDF checklist of your legal rights and next steps',
+      icon: FileText,
+      download: '/downloads/legal-rights-checklist.pdf',
+      size: '2.3 MB'
+    },
+    {
+      title: 'Asbestos Exposure Documentation Guide',
+      description: 'How to document your asbestos exposure for legal purposes',
+      icon: BookOpen,
+      download: '/downloads/exposure-documentation.pdf',
+      size: '1.8 MB'
+    },
+    {
+      title: 'Questions to Ask Your Attorney',
+      description: 'Essential questions to ask when meeting with mesothelioma attorneys',
+      icon: Info,
+      download: '/downloads/attorney-questions.pdf',
+      size: '1.2 MB'
+    },
+    {
+      title: 'Mesothelioma Treatment Options Guide',
+      description: 'Comprehensive guide to mesothelioma treatment options and costs',
+      icon: Heart,
+      download: '/downloads/treatment-guide.pdf',
+      size: '3.1 MB'
+    }
+  ]
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-purple-900 to-purple-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <Badge className="mb-6 bg-purple-500/20 text-purple-100 border-purple-400/30">
+              📚 Comprehensive Resource Center
+            </Badge>
+           
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Mesothelioma <span className="text-yellow-400">Resources</span><br />
+              & Legal Guides
+            </h1>
+           
+            <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-4xl mx-auto">
+              Your complete source for mesothelioma information, legal guides, and resources.
+              Expert insights from attorneys who have won <strong>$4.8+ billion</strong> for asbestos victims.
+            </p>
+           
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4">
+                <Link href="/contact">
+                  <Phone className="mr-2 h-5 w-5" />
+                  Get Free Legal Consultation
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-purple-900 font-bold text-lg px-8 py-4">
+                <Link href="#resources">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  Browse Resources
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Quick Links */}
+      <section className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {quickLinks.map((link, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <div className={`w-12 h-12 ${link.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                    <link.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">{link.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{link.description}</p>
+                  <Link href={link.link}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Get Started
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Featured Resources */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Featured <span className="text-purple-600">Resources</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Start with these essential guides for mesothelioma victims and their families.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {featuredResources.map((resource) => (
+              <Card key={resource.id} className="hover:shadow-xl transition-shadow">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <Badge className="bg-purple-100 text-purple-800">
+                      {resource.category}
+                    </Badge>
+                    {resource.featured && (
+                      <Badge className="bg-yellow-100 text-yellow-800">
+                        Featured
+                      </Badge>
+                    )}
+                  </div>
+                  <CardTitle className="text-xl">{resource.title}</CardTitle>
+                  <CardDescription>{resource.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                    <div className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-1" />
+                      {resource.date}
+                    </div>
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-1" />
+                      {resource.readTime}
+                    </div>
+                  </div>
+                 
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {resource.tags.map((tag, idx) => (
+                      <Badge key={idx} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                 
+                  <Button className="w-full">
+                    Read Full Guide
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Resource Categories */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Resource <span className="text-purple-600">Categories</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Browse our comprehensive collection of mesothelioma resources organized by topic.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {resourceCategories.map((category, index) => (
+              <Card key={index} className="hover:shadow-xl transition-shadow">
+                <CardHeader>
+                  <div className="flex items-center space-x-4">
+                    <div className={`p-3 bg-${category.color}-100 rounded-full`}>
+                      <category.icon className={`h-6 w-6 text-${category.color}-600`} />
+                    </div>
+                   
