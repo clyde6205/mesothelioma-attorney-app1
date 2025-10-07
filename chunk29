@@ -1,0 +1,71 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { StripeService } from '@/lib/stripe'
+import { PayPalService } from '@/lib/paypal'
+import { z } from 'zod'
+
+const paymentIntentSchema = z.object({
+  amount: z.number().min(1, 'Amount must be at least $1'),
+  currency: z.string().default('usd'),
+  leadId: z.string().min(1, 'Lead ID is required'),
+  provider: z.enum(['stripe', 'paypal']),
+  description: z.string().optional(),
+  metadata: z.record(z.string()).optional()
+})
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const validatedData = paymentIntentSchema.parse(body)
+    if (validatedData.provider === 'stripe') {
+      const stripeService = new StripeService()
+      const result = await stripeService.createPaymentIntent({
+        amount: validatedData.amount,
+        currency: validatedData.currency,
+        leadId: validatedData.leadId,
+        description: validatedData.description,
+        metadata: validatedData.metadata
+      })
+      return NextResponse.json({
+        success: true,
+        provider: 'stripe',
+        clientSecret: result.clientSecret,
+        paymentIntentId: result.paymentIntentId
+      })
+    } else if (validatedData.provider === 'paypal') {
+      const paypalService = new PayPalService()
+      const order = await paypalService.createOrder({
+        amount: validatedData.amount,
+        currency: validatedData.currency,
+        leadId: validatedData.leadId,
+        description: validatedData.description,
+        returnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/payment/success`,
+        cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/payment/cancel`
+      })
+      const approvalUrl = order.links.find(link => link.rel === 'approve')?.href
+      return NextResponse.json({
+        success: true,
+        provider: 'paypal',
+        orderId: order.id,
+        approvalUrl: approvalUrl || '',
+        status: order.status
+      })
+    }
+    return NextResponse.json(
+      { error: 'Invalid payment provider' },
+      { status: 400 }
+    )
+  } catch (error) {
+    console.error('Payment intent creation error:', error)
+   
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Validation error', details: error.errors },
+        { status: 400 }
+      )
+    }
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
