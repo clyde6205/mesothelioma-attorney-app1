@@ -1,0 +1,453 @@
+// WhatsApp Business API integration for mesothelioma attorney app
+export interface WhatsAppMessage {
+  to: string
+  type: 'text' | 'template' | 'interactive'
+  text?: {
+    body: string
+  }
+  template?: {
+    name: string
+    language: {
+      code: string
+    }
+    components?: Array<{
+      type: string
+      parameters: Array<{
+        type: string
+        text: string
+      }>
+    }>
+  }
+  interactive?: {
+    type: 'button' | 'list'
+    header?: {
+      type: string
+      text: string
+    }
+    body: {
+      text: string
+    }
+    footer?: {
+      text: string
+    }
+    action: {
+      buttons?: Array<{
+        type: 'reply'
+        reply: {
+          id: string
+          title: string
+        }
+      }>
+      sections?: Array<{
+        title: string
+        rows: Array<{
+          id: string
+          title: string
+          description?: string
+        }>
+      }>
+    }
+  }
+}
+
+export class WhatsAppService {
+  private accessToken: string
+  private phoneNumberId: string
+  private baseUrl: string
+  constructor() {
+    this.accessToken = process.env.WHATSAPP_ACCESS_TOKEN || ''
+    this.phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID || ''
+    this.baseUrl = 'https://graph.facebook.com/v18.0'
+  }
+  async sendMessage(message: WhatsAppMessage): Promise<boolean> {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/${this.phoneNumberId}/messages`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${this.accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        }
+      )
+      if (!response.ok) {
+        console.error('WhatsApp API error:', await response.text())
+        return false
+      }
+      return true
+    } catch (error) {
+      console.error('WhatsApp service error:', error)
+      return false
+    }
+  }
+  // Send welcome message to new lead
+  async sendWelcomeMessage(phone: string, name: string): Promise<boolean> {
+    const message: WhatsAppMessage = {
+      to: phone,
+      type: 'template',
+      template: {
+        name: 'mesothelioma_welcome',
+        language: {
+          code: 'en'
+        },
+        components: [
+          {
+            type: 'body',
+            parameters: [
+              {
+                type: 'text',
+                text: name
+              }
+            ]
+          }
+        ]
+      }
+    }
+    return await this.sendMessage(message)
+  }
+  // Send consultation reminder
+  async sendConsultationReminder(phone: string, name: string, appointmentTime: string): Promise<boolean> {
+    const message: WhatsAppMessage = {
+      to: phone,
+      type: 'template',
+      template: {
+        name: 'consultation_reminder',
+        language: {
+          code: 'en'
+        },
+        components: [
+          {
+            type: 'body',
+            parameters: [
+              {
+                type: 'text',
+                text: name
+              },
+              {
+                type: 'text',
+                text: appointmentTime
+              }
+            ]
+          }
+        ]
+      }
+    }
+    return await this.sendMessage(message)
+  }
+  // Send legal resources message
+  async sendLegalResources(phone: string): Promise<boolean> {
+    const message: WhatsAppMessage = {
+      to: phone,
+      type: 'interactive',
+      interactive: {
+        type: 'button',
+        body: {
+          text: 'Get instant access to our mesothelioma legal resources:'
+        },
+        action: {
+          buttons: [
+            {
+              type: 'reply',
+              reply: {
+                id: 'legal_guide',
+                title: '📋 Legal Guide'
+              }
+            },
+            {
+              type: 'reply',
+              reply: {
+                id: 'symptom_checker',
+                title: '🏥 Symptom Checker'
+              }
+            },
+            {
+              type: 'reply',
+              reply: {
+                id: 'lawyer_match',
+                title: '⚖️ Find Lawyer'
+              }
+            }
+          ]
+        }
+      }
+    }
+    return await this.sendMessage(message)
+  }
+  // Send community building message
+  async sendCommunityInvite(phone: string, name: string): Promise<boolean> {
+    const message: WhatsAppMessage = {
+      to: phone,
+      type: 'interactive',
+      interactive: {
+        type: 'button',
+        header: {
+          type: 'text',
+          text: 'Join Our Support Community'
+        },
+        body: {
+          text: `Hi ${name}! Connect with other mesothelioma patients and families who understand your journey. Get support, share experiences, and access exclusive resources.`
+        },
+        action: {
+          buttons: [
+            {
+              type: 'reply',
+              reply: {
+                id: 'join_community',
+                title: '🤝 Join Community'
+              }
+            },
+            {
+              type: 'reply',
+              reply: {
+                id: 'learn_more',
+                title: 'ℹ️ Learn More'
+              }
+            }
+          ]
+        }
+      }
+    }
+    return await this.sendMessage(message)
+  }
+  // Send founder direct communication
+  async sendFounderMessage(phone: string, message: string): Promise<boolean> {
+    const whatsappMessage: WhatsAppMessage = {
+      to: phone,
+      type: 'text',
+      text: {
+        body: `Message from our founder:\n\n${message}\n\n- The Mesothelioma Attorney Team`
+      }
+    }
+    return await this.sendMessage(whatsappMessage)
+  }
+  // Send payment confirmation
+  async sendPaymentConfirmation(phone: string, amount: number, transactionId: string): Promise<boolean> {
+    const message: WhatsAppMessage = {
+      to: phone,
+      type: 'template',
+      template: {
+        name: 'payment_confirmation',
+        language: {
+          code: 'en'
+        },
+        components: [
+          {
+            type: 'body',
+            parameters: [
+              {
+                type: 'text',
+                text: `$${amount.toFixed(2)}`
+              },
+              {
+                type: 'text',
+                text: transactionId
+              }
+            ]
+          }
+        ]
+      }
+    }
+    return await this.sendMessage(message)
+  }
+  // Verify webhook signature
+  verifyWebhookSignature(payload: string, signature: string): boolean {
+    const crypto = require('crypto')
+    const expectedSignature = crypto
+      .createHmac('sha256', process.env.WHATSAPP_WEBHOOK_SECRET || '')
+      .update(payload)
+      .digest('hex')
+    return signature === `sha256=${expectedSignature}`
+  }
+  // Handle incoming messages
+  async handleIncomingMessage(webhookData: any) {
+    try {
+      const entry = webhookData.entry?.[0]
+      const changes = entry?.changes?.[0]
+      const value = changes?.value
+      if (!value?.messages) return
+      for (const message of value.messages) {
+        const phone = message.from
+        const messageType = message.type
+        const messageId = message.id
+        // Log the message
+        console.log('Received WhatsApp message:', {
+          phone,
+          type: messageType,
+          id: messageId
+        })
+        // Handle different message types
+        switch (messageType) {
+          case 'text':
+            await this.handleTextMessage(phone, message.text.body)
+            break
+          case 'button':
+            await this.handleButtonResponse(phone, message.button)
+            break
+          case 'interactive':
+            await this.handleInteractiveResponse(phone, message.interactive)
+            break
+        }
+      }
+    } catch (error) {
+      console.error('Error handling incoming WhatsApp message:', error)
+    }
+  }
+  private async handleTextMessage(phone: string, text: string) {
+    // Auto-respond to common queries
+    const lowerText = text.toLowerCase()
+   
+    if (lowerText.includes('help') || lowerText.includes('info')) {
+      await this.sendLegalResources(phone)
+    } else if (lowerText.includes('lawyer') || lowerText.includes('attorney')) {
+      await this.sendMessage({
+        to: phone,
+        type: 'text',
+        text: {
+          body: 'I\'ll connect you with our top mesothelioma attorneys. Please provide your name and state, and we\'ll match you with the best lawyer for your case.'
+        }
+      })
+    } else if (lowerText.includes('consultation') || lowerText.includes('free')) {
+      await this.sendMessage({
+        to: phone,
+        type: 'text',
+        text: {
+          body: 'Yes! We offer free consultations with mesothelioma attorneys. Our lawyers will review your case at no cost and only charge if they win your case. Reply with your contact details to schedule.'
+        }
+      })
+    }
+  }
+  private async handleButtonResponse(phone: string, button: any) {
+    const buttonId = button.payload
+   
+    switch (buttonId) {
+      case 'legal_guide':
+        await this.sendMessage({
+          to: phone,
+          type: 'text',
+          text: {
+            body: '📋 MESOTHELIOMA LEGAL GUIDE\n\n1. Document your asbestos exposure history\n2. Gather medical records and diagnosis\n3. Identify potential defendants (employers, manufacturers)\n4. File within statute of limitations\n5. Work with experienced mesothelioma attorneys\n\nNeed help with any of these steps? Our attorneys are here to guide you.'
+          }
+        })
+        break
+      case 'symptom_checker':
+        await this.sendMessage({
+          to: phone,
+          type: 'interactive',
+          interactive: {
+            type: 'button',
+            body: {
+              text: 'Common mesothelioma symptoms include:\n\n• Chest pain\n• Shortness of breath\n• Persistent cough\n• Fatigue\n• Weight loss\n\nDo you experience any of these symptoms?'
+            },
+            action: {
+              buttons: [
+                {
+                  type: 'reply',
+                  reply: {
+                    id: 'symptoms_yes',
+                    title: 'Yes, I have symptoms'
+                  }
+                },
+                {
+                  type: 'reply',
+                  reply: {
+                    id: 'symptoms_no',
+                    title: 'No symptoms'
+                  }
+                }
+              ]
+            }
+          }
+        })
+        break
+      case 'lawyer_match':
+        await this.sendMessage({
+          to: phone,
+          type: 'text',
+          text: {
+            body: '⚖️ FINDING YOUR MESOTHELIOMA ATTORNEY\n\nTo match you with the best lawyer for your case, I need:\n\n1. Your name\n2. State where you live\n3. Year of asbestos exposure (if known)\n4. Your phone number\n\nReply with this information and I\'ll connect you immediately.'
+          }
+        })
+        break
+    }
+  }
+  private async handleInteractiveResponse(phone: string, interactive: any) {
+    // Handle list responses
+    if (interactive.type === 'list_reply') {
+      const listId = interactive.list_reply.id
+      // Handle different list selections
+      console.log('List selection:', listId)
+    }
+  }
+}
+
+// WhatsApp widget component for website
+export const WhatsAppWidget = {
+  init: () => {
+    if (typeof window !== 'undefined') {
+      // Add WhatsApp floating button
+      const widget = document.createElement('div')
+      widget.id = 'whatsapp-widget'
+      widget.innerHTML = `
+        <div class="whatsapp-widget">
+          <button id="whatsapp-toggle" class="whatsapp-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" fill="currentColor"/>
+            </svg>
+          </button>
+          <div id="whatsapp-chat" class="whatsapp-chat">
+            <div class="whatsapp-header">
+              <div class="whatsapp-info">
+                <h4>Mesothelioma Attorney Support</h4>
+                <span>Online now</span>
+              </div>
+              <button id="whatsapp-close">×</button>
+            </div>
+            <div class="whatsapp-body">
+              <div class="whatsapp-message">
+                <p>Hi! I'm here to help with your mesothelioma case. How can I assist you today?</p>
+              </div>
+            </div>
+            <div class="whatsapp-input">
+              <input type="text" placeholder="Type your message..." id="whatsapp-input-field">
+              <button id="whatsapp-send">Send</button>
+            </div>
+          </div>
+        </div>
+      `
+     
+      document.body.appendChild(widget)
+     
+      // Add event listeners
+      const toggle = document.getElementById('whatsapp-toggle')
+      const close = document.getElementById('whatsapp-close')
+      const chat = document.getElementById('whatsapp-chat')
+      const input = document.getElementById('whatsapp-input-field')
+      const send = document.getElementById('whatsapp-send')
+     
+      toggle?.addEventListener('click', () => {
+        chat?.classList.toggle('active')
+      })
+     
+      close?.addEventListener('click', () => {
+        chat?.classList.remove('active')
+      })
+     
+      send?.addEventListener('click', () => {
+        const message = (input as HTMLInputElement)?.value
+        if (message) {
+          // Send message to WhatsApp API
+          console.log('Sending WhatsApp message:', message)
+          // Add message to chat UI
+          const chatBody = document.querySelector('.whatsapp-body')
+          const messageDiv = document.createElement('div')
+          messageDiv.className = 'whatsapp-message user'
+          messageDiv.innerHTML = `<p>${message}</p>`
+          chatBody?.appendChild(messageDiv)
+          ;(input as HTMLInputElement).value = ''
+        }
+      })
+    }
+  }
+}
