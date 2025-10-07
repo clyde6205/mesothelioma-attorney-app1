@@ -1,0 +1,554 @@
+import { Metadata } from 'next'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  AlertTriangle,
+  Shield,
+  Clock,
+  Users,
+  FileText,
+  CheckCircle,
+  ArrowRight,
+  Phone,
+  Heart,
+  Scale,
+  Award,
+  MapPin,
+  Calendar,
+  Briefcase,
+  Home,
+  Car,
+  Factory,
+  Ship,
+  Building,
+  Wrench,
+  Hammer,
+  HardHat,
+  Truck
+} from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Asbestos Exposure Guide: Complete Legal & Medical Resource | Mesothelioma Attorney',
+  description: 'Comprehensive guide to asbestos exposure, symptoms, legal rights, and compensation. Learn about mesothelioma causes, workplace exposure, and how to get legal help for asbestos-related diseases.',
+  keywords: [
+    'asbestos exposure',
+    'asbestos symptoms',
+    'asbestos cancer',
+    'mesothelioma causes',
+    'asbestos legal help',
+    'asbestos compensation',
+    'workplace asbestos exposure',
+    'asbestos attorney',
+    'asbestos lawsuit',
+    'asbestos trust fund'
+  ],
+  openGraph: {
+    title: 'Asbestos Exposure Guide: Complete Legal & Medical Resource',
+    description: 'Comprehensive guide to asbestos exposure, symptoms, legal rights, and compensation. Learn about mesothelioma causes and how to get legal help.',
+    images: [
+      {
+        url: '/images/asbestos-exposure-guide-4k.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Asbestos exposure guide and legal help',
+      },
+    ],
+  },
+}
+
+export default function AsbestosExposurePage() {
+  const exposureSources = [
+    {
+      icon: Factory,
+      title: 'Manufacturing & Industrial',
+      description: 'Auto parts, textiles, construction materials, shipbuilding',
+      risk: 'High',
+      examples: ['Brake pads', 'Insulation', 'Textiles', 'Cement products']
+    },
+    {
+      icon: Building,
+      title: 'Construction & Building',
+      description: 'Insulation, roofing, flooring, fireproofing materials',
+      risk: 'Very High',
+      examples: ['Pipe insulation', 'Ceiling tiles', 'Flooring', 'Roofing shingles']
+    },
+    {
+      icon: Ship,
+      title: 'Shipbuilding & Maritime',
+      description: 'Navy ships, commercial vessels, shipyard workers',
+      risk: 'Very High',
+      examples: ['Engine rooms', 'Boiler rooms', 'Insulation', 'Fireproofing']
+    },
+    {
+      icon: HardHat,
+      title: 'Mining & Extraction',
+      description: 'Asbestos mining, vermiculite processing, talc mining',
+      risk: 'Extreme',
+      examples: ['Direct asbestos mining', 'Vermiculite processing', 'Talc contamination']
+    },
+    {
+      icon: Wrench,
+      title: 'Automotive Industry',
+      description: 'Brake repairs, clutch replacements, gasket installation',
+      risk: 'High',
+      examples: ['Brake pads', 'Clutch facings', 'Gaskets', 'Heat shields']
+    },
+    {
+      icon: Home,
+      title: 'Residential Exposure',
+      description: 'Home renovations, DIY projects, living near facilities',
+      risk: 'Medium',
+      examples: ['Home insulation', 'Popcorn ceilings', 'Vinyl flooring', 'Siding']
+    }
+  ]
+  const symptoms = [
+    {
+      category: 'Early Stage',
+      symptoms: ['Chest pain', 'Shortness of breath', 'Persistent cough', 'Fatigue'],
+      description: 'Early symptoms may be mild and easily overlooked'
+    },
+    {
+      category: 'Advanced Stage',
+      symptoms: ['Severe chest pain', 'Difficulty breathing', 'Weight loss', 'Swelling'],
+      description: 'Advanced symptoms indicate serious progression'
+    },
+    {
+      category: 'Emergency Symptoms',
+      symptoms: ['Severe breathing difficulty', 'Chest pain', 'Coughing blood', 'Difficulty swallowing'],
+      description: 'Seek immediate medical attention if experiencing these symptoms'
+    }
+  ]
+  const timeline = [
+    {
+      period: 'Immediate (0-10 years)',
+      description: 'Asbestos fibers enter lungs, cause inflammation and scarring',
+      symptoms: 'Usually no symptoms, but damage is occurring'
+    },
+    {
+      period: 'Early Stage (10-30 years)',
+      description: 'Pleural plaques and thickening develop',
+      symptoms: 'Mild shortness of breath, chest discomfort'
+    },
+    {
+      period: 'Intermediate (20-40 years)',
+      description: 'Asbestosis develops, lung function decreases',
+      symptoms: 'Progressive shortness of breath, persistent cough'
+    },
+    {
+      period: 'Advanced (30-50 years)',
+      description: 'Mesothelioma and lung cancer may develop',
+      symptoms: 'Severe symptoms, significant disability'
+    }
+  ]
+  const legalRights = [
+    {
+      icon: Scale,
+      title: 'Workers Compensation',
+      description: 'Coverage for workplace asbestos exposure injuries',
+      timeframe: 'Varies by state',
+      benefits: 'Medical expenses, lost wages, disability benefits'
+    },
+    {
+      icon: Shield,
+      title: 'Personal Injury Lawsuit',
+      description: 'Sue responsible parties for negligence',
+      timeframe: '1-6 years from diagnosis',
+      benefits: 'Pain and suffering, medical costs, lost income'
+    },
+    {
+      icon: Award,
+      title: 'Asbestos Trust Funds',
+      description: 'Compensation from bankrupt asbestos companies',
+      timeframe: '6-12 months processing',
+      benefits: 'Quick compensation without lengthy litigation'
+    },
+    {
+      icon: Heart,
+      title: 'Wrongful Death Claims',
+      description: 'Family members can sue for loved ones lost to mesothelioma',
+      timeframe: '1-3 years from death',
+      benefits: 'Funeral costs, lost support, pain and suffering'
+    }
+  ]
+  const industries = [
+    { name: 'Construction', workers: '1.3M+', risk: 'Very High' },
+    { name: 'Manufacturing', workers: '800K+', risk: 'High' },
+    { name: 'Shipbuilding', workers: '200K+', risk: 'Very High' },
+    { name: 'Mining', workers: '50K+', risk: 'Extreme' },
+    { name: 'Automotive', workers: '1M+', risk: 'High' },
+    { name: 'Textiles', workers: '300K+', risk: 'Medium' }
+  ]
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-red-900 to-red-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <Badge className="mb-6 bg-red-500/20 text-red-100 border-red-400/30">
+              ⚠️ Asbestos Exposure Information
+            </Badge>
+           
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Complete <span className="text-yellow-400">Asbestos Exposure</span><br />
+              Guide & Legal Help
+            </h1>
+           
+            <p className="text-xl md:text-2xl mb-8 text-red-100 max-w-4xl mx-auto">
+              Learn about asbestos exposure risks, symptoms, and your legal rights.
+              Get expert help from attorneys who have won <strong>$4.8+ billion</strong> for asbestos victims.
+            </p>
+           
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4">
+                <Link href="/contact">
+                  <Phone className="mr-2 h-5 w-5" />
+                  Get Free Legal Consultation
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-red-900 font-bold text-lg px-8 py-4">
+                <Link href="#symptoms">
+                  <AlertTriangle className="mr-2 h-5 w-5" />
+                  Check Symptoms
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* What is Asbestos */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                What is <span className="text-red-600">Asbestos?</span>
+              </h2>
+             
+              <p className="text-lg text-gray-600 mb-6">
+                Asbestos is a group of naturally occurring minerals that were widely used in construction,
+                manufacturing, and other industries due to their heat resistance and durability. However,
+                asbestos exposure can cause serious health problems, including mesothelioma, lung cancer,
+                and asbestosis.
+              </p>
+             
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <AlertTriangle className="w-6 h-6 text-red-600 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Extremely Dangerous</h3>
+                    <p className="text-gray-600">Asbestos fibers can cause cancer when inhaled</p>
+                  </div>
+                </div>
+               
+                <div className="flex items-start space-x-3">
+                  <Clock className="w-6 h-6 text-red-600 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Delayed Onset</h3>
+                    <p className="text-gray-600">Symptoms may not appear for 20-50 years after exposure</p>
+                  </div>
+                </div>
+               
+                <div className="flex items-start space-x-3">
+                  <Shield className="w-6 h-6 text-red-600 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-gray-900">No Safe Level</h3>
+                    <p className="text-gray-600">Any amount of asbestos exposure can be harmful</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+            <div className="relative">
+              <Image
+                src="/images/asbestos-fibers-microscope-4k.jpg"
+                alt="Asbestos fibers under microscope"
+                width={600}
+                height={400}
+                className="rounded-lg shadow-xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
+              <div className="absolute bottom-4 left-4 text-white">
+                <p className="text-sm">Asbestos fibers under microscope</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Exposure Sources */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Common <span className="text-red-600">Asbestos Exposure</span> Sources
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Asbestos was used in thousands of products and industries. Understanding where you may have
+              been exposed is crucial for your health and legal case.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {exposureSources.map((source, index) => (
+              <Card key={index} className="hover:shadow-xl transition-shadow">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 bg-red-100 rounded-full">
+                      <source.icon className="h-6 w-6 text-red-600" />
+                    </div>
+                    <Badge className={`${
+                      source.risk === 'Extreme' ? 'bg-red-600' :
+                      source.risk === 'Very High' ? 'bg-red-500' :
+                      source.risk === 'High' ? 'bg-orange-500' :
+                      'bg-yellow-500'
+                    } text-white`}>
+                      {source.risk} Risk
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl">{source.title}</CardTitle>
+                  <CardDescription>{source.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-sm text-gray-700">Common Products:</h4>
+                    <ul className="text-sm text-gray-600 space-y-1">
+                      {source.examples.map((example, idx) => (
+                        <li key={idx} className="flex items-center">
+                          <CheckCircle className="w-3 h-3 text-green-500 mr-2" />
+                          {example}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Symptoms Section */}
+      <section id="symptoms" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Asbestos Exposure <span className="text-red-600">Symptoms</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Symptoms of asbestos-related diseases can take decades to appear.
+              Early detection is crucial for treatment and legal compensation.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {symptoms.map((stage, index) => (
+              <Card key={index} className={`${
+                stage.category === 'Emergency Symptoms' ? 'border-red-500 bg-red-50' :
+                stage.category === 'Advanced Stage' ? 'border-orange-500 bg-orange-50' :
+                'border-blue-500 bg-blue-50'
+              }`}>
+                <CardHeader>
+                  <CardTitle className={`text-xl ${
+                    stage.category === 'Emergency Symptoms' ? 'text-red-800' :
+                    stage.category === 'Advanced Stage' ? 'text-orange-800' :
+                    'text-blue-800'
+                  }`}>
+                    {stage.category}
+                  </CardTitle>
+                  <CardDescription>{stage.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {stage.symptoms.map((symptom, idx) => (
+                      <div key={idx} className="flex items-center space-x-2">
+                        <AlertTriangle className={`w-4 h-4 ${
+                          stage.category === 'Emergency Symptoms' ? 'text-red-600' :
+                          stage.category === 'Advanced Stage' ? 'text-orange-600' :
+                          'text-blue-600'
+                        }`} />
+                        <span className="text-gray-700">{symptom}</span>
+                      </div>
+                    ))}
+                  </div>
+                 
+                  {stage.category === 'Emergency Symptoms' && (
+                    <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg">
+                      <p className="text-red-800 text-sm font-semibold">
+                        🚨 Seek immediate medical attention if experiencing these symptoms
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Timeline Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Asbestos Disease <span className="text-red-600">Timeline</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Understanding the progression of asbestos-related diseases helps in early detection and treatment.
+            </p>
+          </div>
+         
+          <div className="relative">
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-red-300"></div>
+           
+            <div className="space-y-12">
+              {timeline.map((stage, index) => (
+                <div key={index} className={`flex items-center ${
+                  index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+                }`}>
+                  <div className={`w-1/2 ${
+                    index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'
+                  }`}>
+                    <Card className="p-6">
+                      <div className="flex items-center space-x-3 mb-3">
+                        <Calendar className="w-5 h-5 text-red-600" />
+                        <h3 className="text-lg font-semibold text-gray-900">{stage.period}</h3>
+                      </div>
+                      <p className="text-gray-600 mb-3">{stage.description}</p>
+                      <p className="text-sm text-gray-500 italic">{stage.symptoms}</p>
+                    </Card>
+                  </div>
+                 
+                  <div className="w-8 h-8 bg-red-600 rounded-full border-4 border-white shadow-lg flex items-center justify-center z-10">
+                    <span className="text-white font-bold text-sm">{index + 1}</span>
+                  </div>
+                 
+                  <div className="w-1/2"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Legal Rights Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Your Legal <span className="text-blue-600">Rights</span> & Options
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              If you've been exposed to asbestos, you may have legal rights to compensation.
+              Our attorneys can help you understand your options.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {legalRights.map((right, index) => (
+              <Card key={index} className="hover:shadow-xl transition-shadow">
+                <CardHeader>
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="p-3 bg-blue-100 rounded-full">
+                      <right.icon className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <CardTitle className="text-xl">{right.title}</CardTitle>
+                  </div>
+                  <CardDescription>{right.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Clock className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-600">Timeframe: {right.timeframe}</span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-sm text-gray-700 mb-2">Benefits:</h4>
+                      <p className="text-sm text-gray-600">{right.benefits}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Industries at Risk */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Industries at <span className="text-red-600">High Risk</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Certain industries have higher rates of asbestos exposure.
+              Workers in these fields should be especially vigilant about their health.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {industries.map((industry, index) => (
+              <Card key={index} className="text-center">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{industry.name}</h3>
+                    <p className="text-gray-600 mb-1">{industry.workers} workers affected</p>
+                    <Badge className={`${
+                      industry.risk === 'Extreme' ? 'bg-red-600' :
+                      industry.risk === 'Very High' ? 'bg-red-500' :
+                      industry.risk === 'High' ? 'bg-orange-500' :
+                      'bg-yellow-500'
+                    } text-white`}>
+                      {industry.risk} Risk
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* CTA Section */}
+      <section className="py-20 bg-red-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Don't Wait - Get Legal Help Today
+          </h2>
+          <p className="text-xl mb-8 text-red-100">
+            If you've been exposed to asbestos, time is critical. Our mesothelioma attorneys
+            have helped thousands of victims get the compensation they deserve.
+            <strong>Free consultation, no fees unless we win.</strong>
+          </p>
+         
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4">
+              <Link href="/contact">
+                <Phone className="mr-2 h-5 w-5" />
+                Get Free Legal Consultation
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-red-900 font-bold text-lg px-8 py-4">
+              <Link href="/find-lawyer">
+                <ArrowRight className="mr-2 h-5 w-5" />
+                Find Your Attorney
+              </Link>
+            </Button>
+          </div>
+         
+          <div className="mt-8 flex items-center justify-center space-x-6 text-sm text-red-200">
+            <div className="flex items-center">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-300" />
+              No fees unless we win
+            </div>
+            <div className="flex items-center">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-300" />
+              Free case evaluation
+            </div>
+            <div className="flex items-center">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-300" />
+              Available 24/7
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
