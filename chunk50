@@ -1,0 +1,75 @@
+import { Metadata } from 'next'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Download, ExternalLink, Scale, Shield } from 'lucide-react'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | MesotheliomaAttorney.App',
+  description: 'Our terms of service outline the use of our website and services for mesothelioma legal referrals.',
+}
+
+export default function TermsPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        <Card className="shadow-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl flex items-center justify-center gap-2">
+              <Scale className="h-8 w-8 text-blue-600" />
+              Terms of Service
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-8 space-y-6">
+            <section>
+              <h2 className="text-2xl font-bold mb-4">1. Acceptance of Terms</h2>
+              <p className="text-gray-600 mb-4">
+                By using MesotheliomaAttorney.App, you agree to these Terms of Service. This is an attorney referral service, not a law firm. We connect users with qualified mesothelioma attorneys.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">2. Services Provided</h2>
+              <p className="text-gray-600 mb-4">
+                We provide information, forms, and referrals for asbestos/mesothelioma legal help. No attorney-client relationship is formed until you sign a retainer with a referred attorney.
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-gray-600">
+                <li>Free consultations and case matching</li>
+                <li>Educational resources and quizzes</li>
+                <li>Secure payments for premium services</li>
+              </ul>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">3. User Responsibilities</h2>
+              <p className="text-gray-600 mb-4">
+                You agree to provide accurate information and use the site for lawful purposes. We are not liable for attorney outcomes or advice.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">4. Payments & Refunds</h2>
+              <p className="text-gray-600 mb-4">
+                Payments are processed via Stripe/PayPal. Refunds per provider policy; no refunds for consultations.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">5. Limitation of Liability</h2>
+              <p className="text-gray-600 mb-4">
+                We disclaim liability for site use. Attorneys are independent; results vary.
+              </p>
+            </section>
+            <section className="flex flex-col sm:flex-row gap-4 pt-4 border-t">
+              <Button variant="outline" className="flex-1">
+                <Download className="mr-2 h-4 w-4" />
+                Download Terms PDF
+              </Button>
+              <Button className="flex-1">
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Contact Support
+              </Button>
+            </section>
+            <p className="text-sm text-gray-500 text-center">Last updated: October 2025</p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
