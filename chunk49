@@ -1,0 +1,92 @@
+import { Metadata } from 'next'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Download, ExternalLink, Shield, Lock } from 'lucide-react'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | MesotheliomaAttorney.App',
+  description: 'Our privacy policy explains how we collect, use, and protect your personal information in compliance with GDPR and HIPAA.',
+}
+
+export default function PrivacyPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        <Card className="shadow-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl flex items-center justify-center gap-2">
+              <Lock className="h-8 w-8 text-blue-600" />
+              Privacy Policy
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-8 space-y-6">
+            <section>
+              <h2 className="text-2xl font-bold mb-4">1. Introduction</h2>
+              <p className="text-gray-600 mb-4">
+                At MesotheliomaAttorney.App, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website, use our services, or interact with our forms and chat features.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">2. Information We Collect</h2>
+              <p className="text-gray-600 mb-4">
+                We collect personal information you provide through our contact forms, including name, email, phone, state, exposure details, and symptoms. This data helps us connect you with appropriate attorneys.
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-gray-600">
+                <li>Personal identifiers (name, email, phone)</li>
+                <li>Medical information (symptoms, diagnosis—HIPAA compliant)</li>
+                <li>Usage data (IP, browser type for analytics)</li>
+              </ul>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">3. How We Use Your Information</h2>
+              <p className="text-gray-600 mb-4">
+                Your information is used to:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-gray-600">
+                <li>Match you with qualified mesothelioma attorneys</li>
+                <li>Send nurture emails/WhatsApp reminders (with consent)</li>
+                <li>Process payments securely via Stripe/PayPal</li>
+                <li>Improve our services (anonymized analytics)</li>
+              </ul>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">4. Data Sharing</h2>
+              <p className="text-gray-600 mb-4">
+                We share your information only with:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-gray-600">
+                <li>Selected attorneys for case matching (with consent)</li>
+                <li>Payment processors (Stripe/PayPal—encrypted)</li>
+                <li>Legal compliance (no sale of data)</li>
+              </ul>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">5. Security</h2>
+              <p className="text-gray-600 mb-4">
+                We use HTTPS, encryption, and secure hosting (Vercel/Prisma) to protect your data. HIPAA-compliant for medical info.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">6. Your Rights</h2>
+              <p className="text-gray-600 mb-4">
+                Under GDPR/CCPA, you can access/delete your data. Contact us at help@mesotheliomaattorney.app.
+              </p>
+            </section>
+            <section className="flex flex-col sm:flex-row gap-4 pt-4 border-t">
+              <Button variant="outline" className="flex-1">
+                <Download className="mr-2 h-4 w-4" />
+                Download Policy PDF
+              </Button>
+              <Button className="flex-1">
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Contact Support
+              </Button>
+            </section>
+            <p className="text-sm text-gray-500 text-center">Last updated: October 2025</p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
