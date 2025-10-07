@@ -1,0 +1,290 @@
+import { Metadata } from 'next'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  Award,
+  Users,
+  Shield,
+  Clock,
+  Star,
+  MessageCircle,
+  Phone,
+  CheckCircle,
+  ArrowRight,
+  Scale,
+  Heart,
+  DollarSign
+} from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Top Mesothelioma Attorneys - $4.8B+ Won for Asbestos Victims',
+  description: 'Connect with elite mesothelioma attorneys who have won over $4.8 billion for asbestos victims. Free consultation, no fees unless we win. Get justice today.',
+  keywords: [
+    'mesothelioma attorney',
+    'asbestos lawyer',
+    'mesothelioma lawsuit',
+    'asbestos cancer attorney',
+    'mesothelioma compensation',
+    'asbestos exposure lawyer',
+    'mesothelioma settlement',
+    'asbestos litigation',
+    'mesothelioma legal help',
+    'asbestos victim attorney'
+  ],
+  openGraph: {
+    title: 'Top Mesothelioma Attorneys - $4.8B+ Won for Asbestos Victims',
+    description: 'Connect with elite mesothelioma attorneys who have won over $4.8 billion for asbestos victims. Free consultation, no fees unless we win.',
+    images: [
+      {
+        url: '/images/hero-lawyers-4k.jpg',
+        width: 1920,
+        height: 1080,
+        alt: 'Professional mesothelioma attorneys in modern law office',
+      },
+    ],
+  },
+}
+
+export default function HomePage() {
+  const stats = [
+    { number: '$4.8B+', label: 'Won for Victims', icon: DollarSign },
+    { number: '50,000+', label: 'Cases Handled', icon: Scale },
+    { number: '95%', label: 'Success Rate', icon: Award },
+    { number: '24/7', label: 'Support Available', icon: Clock },
+  ]
+  const testimonials = [
+    {
+      name: "Sarah M.",
+      location: "California",
+      text: "The attorneys helped me get $2.3M for my mesothelioma case. They were compassionate and fought tirelessly for my family.",
+      amount: "$2.3M Settlement",
+      rating: 5
+    },
+    {
+      name: "Robert K.",
+      location: "Texas",
+      text: "After 20 years of asbestos exposure at work, these lawyers got me the compensation I deserved. Professional and caring.",
+      amount: "$1.8M Settlement",
+      rating: 5
+    },
+    {
+      name: "Maria L.",
+      location: "Florida",
+      text: "They handled everything with such care and expertise. I couldn't have asked for better representation during this difficult time.",
+      amount: "$3.1M Settlement",
+      rating: 5
+    }
+  ]
+  const practiceAreas = [
+    {
+      title: "Mesothelioma Lawsuits",
+      description: "Specialized representation for mesothelioma victims and their families",
+      icon: Scale,
+      cases: "25,000+ cases won"
+    },
+    {
+      title: "Asbestos Exposure Claims",
+      description: "Comprehensive legal support for occupational and environmental exposure",
+      icon: Shield,
+      cases: "30,000+ claims filed"
+    },
+    {
+      title: "Wrongful Death Cases",
+      description: "Compassionate legal representation for families who lost loved ones",
+      icon: Heart,
+      cases: "15,000+ families helped"
+    },
+    {
+      title: "Trust Fund Claims",
+      description: "Expert assistance with asbestos trust fund applications and appeals",
+      icon: DollarSign,
+      cases: "40,000+ claims processed"
+    }
+  ]
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section with 4K Lawyer Images */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Images */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/hero-lawyers-4k.jpg"
+            alt="Professional mesothelioma attorneys in modern law office"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-800/60"></div>
+        </div>
+       
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+          <div className="max-w-4xl mx-auto">
+            <Badge className="mb-6 bg-blue-500/20 text-blue-100 border-blue-400/30">
+              🏆 #1 Mesothelioma Attorney Network
+            </Badge>
+           
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              Top <span className="text-yellow-400">Mesothelioma</span><br />
+              Attorneys Nationwide
+            </h1>
+           
+            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
+              Over <strong>$4.8 billion won</strong> for asbestos victims. Connect with elite attorneys
+              who specialize in mesothelioma cases. <strong>Free consultation, no fees unless we win.</strong>
+            </p>
+           
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4">
+                <Link href="/contact">
+                  <Phone className="mr-2 h-5 w-5" />
+                  Get Free Consultation
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-900 font-bold text-lg px-8 py-4">
+                <Link href="/find-lawyer">
+                  <Users className="mr-2 h-5 w-5" />
+                  Find Your Lawyer
+                </Link>
+              </Button>
+            </div>
+           
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="flex justify-center mb-2">
+                    <stat.icon className="h-8 w-8 text-yellow-400" />
+                  </div>
+                  <div className="text-3xl md:text-4xl font-bold text-yellow-400">{stat.number}</div>
+                  <div className="text-sm text-blue-200">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Why Choose Our Attorneys */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Why Choose Our <span className="text-blue-600">Elite Attorneys</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our network of mesothelioma attorneys has decades of experience and a proven track record
+              of securing maximum compensation for asbestos victims and their families.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {practiceAreas.map((area, index) => (
+              <Card key={index} className="text-center hover:shadow-xl transition-shadow">
+                <CardHeader>
+                  <div className="flex justify-center mb-4">
+                    <div className="p-4 bg-blue-100 rounded-full">
+                      <area.icon className="h-8 w-8 text-blue-600" />
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl">{area.title}</CardTitle>
+                  <CardDescription className="text-gray-600">
+                    {area.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant="secondary" className="bg-green-100 text-green-800">
+                    {area.cases}
+                  </Badge>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Client Success Stories */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Real <span className="text-blue-600">Success Stories</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              See how our attorneys have helped thousands of mesothelioma victims get the justice and compensation they deserve.
+            </p>
+          </div>
+         
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="relative overflow-hidden">
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <CardTitle className="text-lg">{testimonial.name}</CardTitle>
+                      <CardDescription>{testimonial.location}</CardDescription>
+                    </div>
+                    <div className="flex text-yellow-400">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="h-5 w-5 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800 mb-4 w-fit">
+                    {testimonial.amount}
+                  </Badge>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 italic">"{testimonial.text}"</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* CTA Section */}
+      <section className="py-20 bg-blue-900 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Don't Wait - Get Justice Today
+          </h2>
+          <p className="text-xl mb-8 text-blue-100">
+            Time is limited for mesothelioma claims. Our attorneys are standing by 24/7 to help you
+            get the compensation you deserve. <strong>Free consultation, no obligation.</strong>
+          </p>
+         
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4">
+              <Link href="/contact">
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Start Free Consultation
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-900 font-bold text-lg px-8 py-4">
+              <Link href="/asbestos-exposure">
+                <ArrowRight className="mr-2 h-5 w-5" />
+                Learn About Exposure
+              </Link>
+            </Button>
+          </div>
+         
+          <div className="mt-8 flex items-center justify-center space-x-6 text-sm text-blue-200">
+            <div className="flex items-center">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-400" />
+              No fees unless we win
+            </div>
+            <div className="flex items-center">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-400" />
+              Free case evaluation
+            </div>
+            <div className="flex items-center">
+              <CheckCircle className="h-4 w-4 mr-2 text-green-400" />
+              Available 24/7
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}
