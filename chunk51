@@ -1,0 +1,65 @@
+import { Metadata } from 'next'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { AlertTriangle, Shield, Info } from 'lucide-react'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Legal Disclaimer | MesotheliomaAttorney.App',
+  description: 'Important legal disclaimer for our attorney referral service. Not legal advice; results vary.',
+}
+
+export default function DisclaimerPage() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        <Card className="shadow-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl flex items-center justify-center gap-2">
+              <AlertTriangle className="h-8 w-8 text-red-600" />
+              Legal Disclaimer
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-8 space-y-6">
+            <section>
+              <h2 className="text-2xl font-bold mb-4">Important Notice</h2>
+              <p className="text-gray-600 mb-4">
+                MesotheliomaAttorney.App is an attorney referral service, not a law firm. We do not provide legal advice. No attorney-client relationship is formed by using this site or submitting information.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">No Guarantees</h2>
+              <p className="text-gray-600 mb-4">
+                Past results do not guarantee future outcomes. Compensation amounts vary based on case facts, jurisdiction, and other factors. We cannot guarantee any specific result.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">Attorney Independence</h2>
+              <p className="text-gray-600 mb-4">
+                Referred attorneys are independent contractors. We do not endorse or guarantee their services. You should conduct your own due diligence.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-2xl font-bold mb-4">Medical Disclaimer</h2>
+              <p className="text-gray-600 mb-4">
+                This site is not a substitute for professional medical advice. Consult a doctor for diagnosis/treatment. Symptom quiz is for informational purposes only.
+              </p>
+            </section>
+            <section className="flex flex-col sm:flex-row gap-4 pt-4 border-t">
+              <Button variant="outline" className="flex-1">
+                <Info className="mr-2 h-4 w-4" />
+                Contact Support
+              </Button>
+              <Link href="/privacy">
+                <Button className="flex-1">
+                  Privacy Policy
+                </Button>
+              </Link>
+            </section>
+            <p className="text-sm text-gray-500 text-center">Last updated: October 2025</p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
