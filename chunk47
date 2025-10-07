@@ -1,0 +1,212 @@
+import { Metadata } from 'next'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Search,
+  MapPin,
+  Star,
+  Award,
+  Users,
+  DollarSign,
+  Clock,
+  CheckCircle,
+  Phone,
+  Mail,
+  MessageCircle,
+  Scale,
+  Shield,
+  Heart,
+  ArrowRight,
+  Filter,
+  SlidersHorizontal
+} from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Find Top Mesothelioma Attorneys by State | $4.8B+ Won for Asbestos Victims',
+  description: 'Connect with experienced mesothelioma attorneys in your state. Our network of lawyers has won over $4.8 billion for asbestos victims. Free consultation, no fees unless we win.',
+  keywords: [
+    'mesothelioma attorney',
+    'asbestos lawyer',
+    'mesothelioma lawyer near me',
+    'asbestos attorney by state',
+    'mesothelioma legal help',
+    'asbestos lawyer network',
+    'mesothelioma compensation lawyer',
+    'asbestos litigation attorney'
+  ],
+  openGraph: {
+    title: 'Find Top Mesothelioma Attorneys by State',
+    description: 'Connect with experienced mesothelioma attorneys in your state. Our network has won over $4.8 billion for asbestos victims.',
+    images: [
+      {
+        url: '/images/find-lawyer-4k.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Find mesothelioma attorneys by state',
+      },
+    ],
+  },
+}
+
+export default function FindLawyerPage() {
+  const featuredLawyers = [
+    {
+      id: 1,
+      name: 'Sarah Mitchell',
+      firm: 'Mitchell & Associates',
+      location: 'Los Angeles, CA',
+      experience: '25+ years',
+      rating: 4.9,
+      casesWon: 850,
+      totalRecovered: '$2.1B',
+      specialties: ['Mesothelioma', 'Lung Cancer', 'Asbestosis'],
+      image: '/images/lawyer-sarah-mitchell.jpg',
+      phone: '(555) 123-4567',
+      email: 'sarah@mitchelllaw.com',
+      bio: 'Leading mesothelioma attorney with over 25 years of experience. Specializes in complex asbestos litigation and has secured billions in compensation for victims.',
+      recentCases: [
+        { case: 'Factory Worker Settlement', amount: '$2.3M' },
+        { case: 'Navy Veteran Case', amount: '$1.8M' },
+        { case: 'Construction Worker', amount: '$3.1M' }
+      ],
+      awards: ['Best Lawyers 2024', 'Super Lawyers', 'Martindale-Hubbell AV']
+    },
+    {
+      id: 2,
+      name: 'Robert Chen',
+      firm: 'Chen Legal Group',
+      location: 'Houston, TX',
+      experience: '20+ years',
+      rating: 4.8,
+      casesWon: 650,
+      totalRecovered: '$1.8B',
+      specialties: ['Mesothelioma', 'Asbestos Trust Claims', 'Wrongful Death'],
+      image: '/images/lawyer-robert-chen.jpg',
+      phone: '(555) 987-6543',
+      email: 'robert@chenlegal.com',
+      bio: 'Dedicated mesothelioma attorney focusing on industrial exposure cases. Known for aggressive advocacy and maximum compensation recovery.',
+      recentCases: [
+        { case: 'Oil Refinery Worker', amount: '$2.8M' },
+        { case: 'Shipyard Employee', amount: '$1.9M' },
+        { case: 'Power Plant Worker', amount: '$3.5M' }
+      ],
+      awards: ['Texas Super Lawyers', 'Best Lawyers', 'AVVO 10.0']
+    },
+    {
+      id: 3,
+      name: 'Maria Rodriguez',
+      firm: 'Rodriguez & Partners',
+      location: 'Miami, FL',
+      experience: '18+ years',
+      rating: 4.9,
+      casesWon: 720,
+      totalRecovered: '$1.6B',
+      specialties: ['Mesothelioma', 'Secondary Exposure', 'Latino Community'],
+      image: '/images/lawyer-maria-rodriguez.jpg',
+      phone: '(555) 456-7890',
+      email: 'maria@rodriguezlaw.com',
+      bio: 'Bilingual mesothelioma attorney serving the Latino community. Experienced in secondary exposure cases and family compensation claims.',
+      recentCases: [
+        { case: 'Secondary Exposure', amount: '$1.2M' },
+        { case: 'Family Member Case', amount: '$2.1M' },
+        { case: 'Construction Worker', amount: '$2.7M' }
+      ],
+      awards: ['Florida Legal Elite', 'Hispanic Bar Association', 'Super Lawyers']
+    }
+  ]
+  const states = [
+    { name: 'California', lawyers: 45, avgSettlement: '$2.3M' },
+    { name: 'Texas', lawyers: 38, avgSettlement: '$2.1M' },
+    { name: 'Florida', lawyers: 32, avgSettlement: '$1.9M' },
+    { name: 'New York', lawyers: 28, avgSettlement: '$2.5M' },
+    { name: 'Pennsylvania', lawyers: 25, avgSettlement: '$2.2M' },
+    { name: 'Illinois', lawyers: 22, avgSettlement: '$2.0M' },
+    { name: 'Ohio', lawyers: 20, avgSettlement: '$1.8M' },
+    { name: 'Michigan', lawyers: 18, avgSettlement: '$1.9M' },
+    { name: 'New Jersey', lawyers: 16, avgSettlement: '$2.4M' },
+    { name: 'Virginia', lawyers: 15, avgSettlement: '$2.1M' }
+  ]
+  const lawyerQualities = [
+    {
+      icon: Award,
+      title: 'Proven Track Record',
+      description: 'Attorneys with millions in settlements and verdicts',
+      stats: '$4.8B+ Total Recovered'
+    },
+    {
+      icon: Scale,
+      title: 'Specialized Experience',
+      description: 'Focus exclusively on mesothelioma and asbestos cases',
+      stats: '25+ Years Average Experience'
+    },
+    {
+      icon: Shield,
+      title: 'No Fees Unless We Win',
+      description: 'Free consultation with contingency-based representation',
+      stats: '100% Contingency Fee'
+    },
+    {
+      icon: Heart,
+      title: 'Compassionate Care',
+      description: 'Dedicated to helping victims and their families',
+      stats: '10,000+ Families Helped'
+    }
+  ]
+  const specialties = [
+    'Mesothelioma',
+    'Asbestos Lung Cancer',
+    'Asbestosis',
+    'Pleural Plaques',
+    'Secondary Exposure',
+    'Wrongful Death',
+    'Asbestos Trust Claims',
+    'Workers Compensation',
+    'VA Benefits',
+    'Class Action Lawsuits'
+  ]
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <Badge className="mb-6 bg-blue-500/20 text-blue-100 border-blue-400/30">
+              ⚖️ Elite Attorney Network
+            </Badge>
+           
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Find Top <span className="text-yellow-400">Mesothelioma</span><br />
+              Attorneys in Your State
+            </h1>
+           
+            <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto">
+              Connect with experienced mesothelioma attorneys who have won over
+              <strong> $4.8 billion</strong> for asbestos victims nationwide.
+              <strong>Free consultation, no fees unless we win.</strong>
+            </p>
+           
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto mb-8">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Enter your city or state..."
+                      className="w-full pl-10 pr-4 py-3 text-gray-900 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+                <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8">
+                  Find Lawyers
+                </Button>
+              </div>
+            </div>
+           
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="text
