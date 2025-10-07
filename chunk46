@@ -1,0 +1,190 @@
+import { Metadata } from 'next'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  AlertTriangle,
+  Shield,
+  Clock,
+  Users,
+  FileText,
+  CheckCircle,
+  ArrowRight,
+  Phone,
+  Heart,
+  Scale,
+  Award,
+  MapPin,
+  Calendar,
+  Briefcase,
+  Home,
+  Car,
+  Factory,
+  Ship,
+  Building,
+  Wrench,
+  Hammer,
+  HardHat,
+  Truck
+} from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Asbestos Exposure Guide: Complete Legal & Medical Resource | Mesothelioma Attorney',
+  description: 'Comprehensive guide to asbestos exposure, symptoms, legal rights, and compensation. Learn about mesothelioma causes, workplace exposure, and how to get legal help for asbestos-related diseases.',
+  keywords: [
+    'asbestos exposure',
+    'asbestos symptoms',
+    'asbestos cancer',
+    'mesothelioma causes',
+    'asbestos legal help',
+    'asbestos compensation',
+    'workplace asbestos exposure',
+    'asbestos attorney',
+    'asbestos lawsuit',
+    'asbestos trust fund'
+  ],
+  openGraph: {
+    title: 'Asbestos Exposure Guide: Complete Legal & Medical Resource',
+    description: 'Comprehensive guide to asbestos exposure, symptoms, legal rights, and compensation. Learn about mesothelioma causes and how to get legal help.',
+    images: [
+      {
+        url: '/images/asbestos-exposure-guide-4k.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Asbestos exposure guide and legal help',
+      },
+    ],
+  },
+}
+
+export default function AsbestosExposurePage() {
+  const exposureSources = [
+    {
+      icon: Factory,
+      title: 'Manufacturing & Industrial',
+      description: 'Auto parts, textiles, construction materials, shipbuilding',
+      risk: 'High',
+      examples: ['Brake pads', 'Insulation', 'Textiles', 'Cement products']
+    },
+    {
+      icon: Building,
+      title: 'Construction & Building',
+      description: 'Insulation, roofing, flooring, fireproofing materials',
+      risk: 'Very High',
+      examples: ['Pipe insulation', 'Ceiling tiles', 'Flooring', 'Roofing shingles']
+    },
+    {
+      icon: Ship,
+      title: 'Shipbuilding & Maritime',
+      description: 'Navy ships, commercial vessels, shipyard workers',
+      risk: 'Very High',
+      examples: ['Engine rooms', 'Boiler rooms', 'Insulation', 'Fireproofing']
+    },
+    {
+      icon: HardHat,
+      title: 'Mining & Extraction',
+      description: 'Asbestos mining, vermiculite processing, talc mining',
+      risk: 'Extreme',
+      examples: ['Direct asbestos mining', 'Vermiculite processing', 'Talc contamination']
+    },
+    {
+      icon: Wrench,
+      title: 'Automotive Industry',
+      description: 'Brake repairs, clutch replacements, gasket installation',
+      risk: 'High',
+      examples: ['Brake pads', 'Clutch facings', 'Gaskets', 'Heat shields']
+    },
+    {
+      icon: Home,
+      title: 'Residential Exposure',
+      description: 'Home renovations, DIY projects, living near facilities',
+      risk: 'Medium',
+      examples: ['Home insulation', 'Popcorn ceilings', 'Vinyl flooring', 'Siding']
+    }
+  ]
+  const symptoms = [
+    {
+      category: 'Early Stage',
+      symptoms: ['Chest pain', 'Shortness of breath', 'Persistent cough', 'Fatigue'],
+      description: 'Early symptoms may be mild and easily overlooked'
+    },
+    {
+      category: 'Advanced Stage',
+      symptoms: ['Severe chest pain', 'Difficulty breathing', 'Weight loss', 'Swelling'],
+      description: 'Advanced symptoms indicate serious progression'
+    },
+    {
+      category: 'Emergency Symptoms',
+      symptoms: ['Severe breathing difficulty', 'Chest pain', 'Coughing blood', 'Difficulty swallowing'],
+      description: 'Seek immediate medical attention if experiencing these symptoms'
+    }
+  ]
+  const timeline = [
+    {
+      period: 'Immediate (0-10 years)',
+      description: 'Asbestos fibers enter lungs, cause inflammation and scarring',
+      symptoms: 'Usually no symptoms, but damage is occurring'
+    },
+    {
+      period: 'Early Stage (10-30 years)',
+      description: 'Pleural plaques and thickening develop',
+      symptoms: 'Mild shortness of breath, chest discomfort'
+    },
+    {
+      period: 'Intermediate (20-40 years)',
+      description: 'Asbestosis develops, lung function decreases',
+      symptoms: 'Progressive shortness of breath, persistent cough'
+    },
+    {
+      period: 'Advanced (30-50 years)',
+      description: 'Mesothelioma and lung cancer may develop',
+      symptoms: 'Severe symptoms, significant disability'
+    }
+  ]
+  const legalRights = [
+    {
+      icon: Scale,
+      title: 'Workers Compensation',
+      description: 'Coverage for workplace asbestos exposure injuries',
+      timeframe: 'Varies by state',
+      benefits: 'Medical expenses, lost wages, disability benefits'
+    },
+    {
+      icon: Shield,
+      title: 'Personal Injury Lawsuit',
+      description: 'Sue responsible parties for negligence',
+      timeframe: '1-6 years from diagnosis',
+      benefits: 'Pain and suffering, medical costs, lost income'
+    },
+    {
+      icon: Award,
+      title: 'Asbestos Trust Funds',
+      description: 'Compensation from bankrupt asbestos companies',
+      timeframe: '6-12 months processing',
+      benefits: 'Quick compensation without lengthy litigation'
+    },
+    {
+      icon: Heart,
+      title: 'Wrongful Death Claims',
+      description: 'Family members can sue for loved ones lost to mesothelioma',
+      timeframe: '1-3 years from death',
+      benefits: 'Funeral costs, lost support, pain and suffering'
+    }
+  ]
+  const industries = [
+    { name: 'Construction', workers: '1.3M+', risk: 'Very High' },
+    { name: 'Manufacturing', workers: '800K+', risk: 'High' },
+    { name: 'Shipbuilding', workers: '200K+', risk: 'Very High' },
+    { name: 'Mining', workers: '50K+', risk: 'Extreme' },
+    { name: 'Automotive', workers: '1M+', risk: 'High' },
+    { name: 'Textiles', workers: '300K+', risk: 'Medium' }
+  ]
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-red-900 to-red-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <Badge className="mb-6 bg-red-500
