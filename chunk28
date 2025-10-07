@@ -1,0 +1,217 @@
+import Stripe from 'stripe'
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2023-10-16',
+})
+
+export interface PaymentIntentData {
+  amount: number
+  currency?: string
+  leadId: string
+  description?: string
+  metadata?: Record<string, string>
+}
+
+export interface CreatePaymentIntentResponse {
+  clientSecret: string
+  paymentIntentId: string
+}
+
+export class StripeService {
+  private stripe: Stripe
+  constructor() {
+    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: '2023-10-16',
+    })
+  }
+  async createPaymentIntent(data: PaymentIntentData): Promise<CreatePaymentIntentResponse> {
+    try {
+      const paymentIntent = await this.stripe.paymentIntents.create({
+        amount: data.amount * 100, // Convert to cents
+        currency: data.currency || 'usd',
+        metadata: {
+          leadId: data.leadId,
+          description: data.description || 'Mesothelioma Legal Consultation',
+          ...data.metadata
+        },
+        automatic_payment_methods: {
+          enabled: true,
+        },
+        description: data.description || 'Mesothelioma Legal Consultation Payment'
+      })
+      return {
+        clientSecret: paymentIntent.client_secret!,
+        paymentIntentId: paymentIntent.id
+      }
+    } catch (error) {
+      console.error('Error creating payment intent:', error)
+      throw new Error('Failed to create payment intent')
+    }
+  }
+  async confirmPaymentIntent(paymentIntentId: string): Promise<Stripe.PaymentIntent> {
+    try {
+      return await this.stripe.paymentIntents.retrieve(paymentIntentId)
+    } catch (error) {
+      console.error('Error confirming payment intent:', error)
+      throw new Error('Failed to confirm payment intent')
+    }
+  }
+  async createSubscription(data: {
+    leadId: string
+    priceId: string
+    customerId?: string
+    customerEmail?: string
+    customerName?: string
+  }): Promise<{ subscriptionId: string; clientSecret: string }> {
+    try {
+      let customer: Stripe.Customer
+      if (data.customerId) {
+        customer = await this.stripe.customers.retrieve(data.customerId) as Stripe.Customer
+      } else {
+        customer = await this.stripe.customers.create({
+          email: data.customerEmail,
+          name: data.customerName,
+          metadata: {
+            leadId: data.leadId
+          }
+        })
+      }
+      const subscription = await this.stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{ price: data.priceId }],
+        payment_behavior: 'default_incomplete',
+        payment_settings: { save_default_payment_method: 'on_subscription' },
+        expand: ['latest_invoice.payment_intent'],
+        metadata: {
+          leadId: data.leadId
+        }
+      })
+      const invoice = subscription.latest_invoice as Stripe.Invoice
+      const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent
+      return {
+        subscriptionId: subscription.id,
+        clientSecret: paymentIntent.client_secret!
+      }
+    } catch (error) {
+      console.error('Error creating subscription:', error)
+      throw new Error('Failed to create subscription')
+    }
+  }
+  async handleWebhook(payload: string, signature: string): Promise<void> {
+    try {
+      const event = this.stripe.webhooks.constructEvent(
+        payload,
+        signature,
+        process.env.STRIPE_WEBHOOK_SECRET!
+      )
+      switch (event.type) {
+        case 'payment_intent.succeeded':
+          await this.handlePaymentSuccess(event.data.object as Stripe.PaymentIntent)
+          break
+        case 'payment_intent.payment_failed':
+          await this.handlePaymentFailure(event.data.object as Stripe.PaymentIntent)
+          break
+        case 'invoice.payment_succeeded':
+          await this.handleSubscriptionPaymentSuccess(event.data.object as Stripe.Invoice)
+          break
+        case 'invoice.payment_failed':
+          await this.handleSubscriptionPaymentFailure(event.data.object as Stripe.Invoice)
+          break
+        default:
+          console.log(`Unhandled event type: ${event.type}`)
+      }
+    } catch (error) {
+      console.error('Webhook error:', error)
+      throw new Error('Invalid webhook signature')
+    }
+  }
+  private async handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent): Promise<void> {
+    try {
+      const { prisma } = await import('@/lib/prisma')
+      const { WhatsAppService } = await import('@/lib/whatsapp')
+      const leadId = paymentIntent.metadata.leadId
+      if (!leadId) return
+      // Update payment status in database
+      await prisma.payment.create({
+        data: {
+          leadId,
+          amount: paymentIntent.amount / 100, // Convert from cents
+          currency: paymentIntent.currency,
+          provider: 'STRIPE',
+          providerId: paymentIntent.id,
+          status: 'COMPLETED',
+          description: paymentIntent.description || 'Mesothelioma Legal Consultation Payment',
+          metadata: JSON.stringify({
+            paymentIntentId: paymentIntent.id,
+            customerId: paymentIntent.customer,
+            chargeId: paymentIntent.latest_charge
+          })
+        }
+      })
+      // Get lead information
+      const lead = await prisma.lead.findUnique({
+        where: { id: leadId }
+      })
+      if (lead) {
+        // Send confirmation WhatsApp message
+        const whatsappService = new WhatsAppService()
+        await whatsappService.sendPaymentConfirmation(
+          lead.whatsappNumber || lead.phone,
+          paymentIntent.amount / 100,
+          paymentIntent.id
+        )
+        // Update lead status
+        await prisma.lead.update({
+          where: { id: leadId },
+          data: {
+            status: 'QUALIFIED',
+            notes: 'Payment received - qualified lead'
+          }
+        })
+      }
+      console.log(`Payment succeeded for lead ${leadId}: ${paymentIntent.id}`)
+    } catch (error) {
+      console.error('Error handling payment success:', error)
+    }
+  }
+  private async handlePaymentFailure(paymentIntent: Stripe.PaymentIntent): Promise<void> {
+    try {
+      const { prisma } = await import('@/lib/prisma')
+      const leadId = paymentIntent.metadata.leadId
+      if (!leadId) return
+      // Update payment status in database
+      await prisma.payment.create({
+        data: {
+          leadId,
+          amount: paymentIntent.amount / 100,
+          currency: paymentIntent.currency,
+          provider: 'STRIPE',
+          providerId: paymentIntent.id,
+          status: 'FAILED',
+          description: paymentIntent.description || 'Mesothelioma Legal Consultation Payment',
+          metadata: JSON.stringify({
+            paymentIntentId: paymentIntent.id,
+            failureReason: paymentIntent.last_payment_error?.message
+          })
+        }
+      })
+      console.log(`Payment failed for lead ${leadId}: ${paymentIntent.id}`)
+    } catch (error) {
+      console.error('Error handling payment failure:', error)
+    }
+  }
+  private async handleSubscriptionPaymentSuccess(invoice: Stripe.Invoice): Promise<void> {
+    try {
+      const { prisma } = await import('@/lib/prisma')
+      const leadId = invoice.metadata.leadId
+      if (!leadId) return
+      // Update subscription status
+      await prisma.payment.create({
+        data: {
+          leadId,
+          amount: invoice.amount_paid / 100,
+          currency: invoice.currency,
+          provider: 'STRIPE',
+          providerId: invoice.id,
+          status: 'COMPLETED',
+          description: 'Mesothelioma
