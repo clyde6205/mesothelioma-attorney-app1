@@ -1,0 +1,23 @@
+import NextAuth from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { prisma } from '@/lib/prisma'
+import bcrypt from 'bcryptjs' // Add to package.json deps later
+
+const handler = NextAuth({
+  providers: [CredentialsProvider({
+    name: 'Admin',
+    credentials: { email: {}, password: {} },
+    async authorize(credentials) {
+      const user = await prisma.user.findUnique({ where: { email: credentials.email as string } })
+      if (user && bcrypt.compareSync(credentials.password as string, user.hashedPassword)) return user
+      return null
+    }
+  })],
+  pages: { signIn: '/admin/login' },
+  session: { strategy: 'jwt' },
+  callbacks: { 
+    session: ({ session, token }) => ({ ...session, user: token.user }) 
+  }
+})
+
+export { handler as GET, handler as POST }
