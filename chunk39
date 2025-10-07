@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Mesothelioma Attorney</title>
+    <meta name="description" content="You're offline but can still get mesothelioma legal help. Call our 24/7 hotline for immediate assistance.">
+   
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1e40af">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MesoAttorney">
+   
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+   
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+       
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+       
+        .container {
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+       
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+       
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+        }
+       
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+       
+        .emergency-section {
+            background: rgba(220, 38, 38, 0.2);
+            border: 2px solid rgba(220, 38, 38, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+       
+        .emergency-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fca5a5;
+        }
+       
+        .phone-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fca5a5;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+       
+        .phone-number:hover {
+            color: white;
+        }
+       
+        .call-button {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+       
+        .call-button:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+        }
+       
+        .contact-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+       
+        .contact-btn {
+            background: #1e40af;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+       
+        .contact-btn:hover {
+            background: #1e3a8a;
+            transform: translateY(-1px);
+        }
+       
+        .contact-btn .emoji {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+       
+        .info-section {
+            background: #f0f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+       
+        .info-title {
+            color: #1e40af;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+       
+        .info-text {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+       
+        .retry-btn {
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+       
+        .retry-btn:hover {
+            background: #059669;
+        }
+       
+        .footer-text {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+       
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+           
+            h1 {
+                font-size: 24px;
+            }
+           
+            .call-button {
+                padding: 14px 28px;
+                font-size: 16px;
+            }
+           
+            .contact-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🔌</div>
+       
+        <h1>You're Offline</h1>
+        <p class="subtitle">Don't worry, we're still here to help! Our mesothelioma attorneys are available 24/7 for urgent cases.</p>
+       
+        <div class="emergency-section">
+            <div class="emergency-title">🚨 Need Immediate Legal Help?</div>
+            <a href="tel:1-800-637-6435" class="call-button">
+                📞 Call 1-800-MESO-HELP
+            </a>
+        </div>
+       
+        <div class="contact-options">
+            <a href="tel:1-800-637-6435" class="contact-btn">
+                <span class="emoji">📱</span>
+                Call Now
+            </a>
+            <a href="sms:1-800-637-6435" class="contact-btn">
+                <span class="emoji">💬</span>
+                Text Us
+            </a>
+            <a href="https://wa.me/15551234567" class="contact-btn">
+                <span class="emoji">📲</span>
+                WhatsApp
+            </a>
+            <a href="mailto:help@mesotheliomaattorney.app" class="contact-btn">
+                <span class="emoji">📧</span>
+                Email
+            </a>
+        </div>
+       
+        <div class="info-section">
+            <div class="info-title">💡 What We Can Do For You</div>
+            <div class="info-text">
+                • Free legal consultation<br>
+                • No fees unless we win your case<br>
+                • Connect you with top mesothelioma attorneys<br>
+                • Help with asbestos exposure claims
+            </div>
+        </div>
+       
+        <button onclick="window.location.reload()" class="retry-btn">
+            🔄 Try Again
+        </button>
+       
+        <div class="footer-text">
+            <strong>Mesothelioma Attorney App</strong><br>
+            Available 24/7 • Free Consultation • No Fees Unless We Win
+        </div>
+    </div>
+    <script>
+        // Check connection status
+        function updateConnectionStatus() {
+            if (navigator.onLine) {
+                // If connection is restored, redirect to main page
+                window.location.href = '/';
+            }
+        }
+        // Listen for connection changes
+        window.addEventListener('online', updateConnectionStatus);
+       
+        // Check connection every 5 seconds
+        setInterval(updateConnectionStatus, 5000);
+        // Track offline page view
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Offline Page',
+                page_location: window.location.href
+            });
+        }
+        // Service worker registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('Service Worker registered:', registration);
+                })
+                .catch(error => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
+    </script>
+</body>
+</html>
