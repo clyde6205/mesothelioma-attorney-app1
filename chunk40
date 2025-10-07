@@ -1,0 +1,35 @@
+# MesotheliomaAttorney.App
+
+SEO-optimized lead funnel for asbestos/mesothelioma victims. Captures Google traffic, funnels to sellable leads via quiz/form, with WhatsApp, Stripe payments, admin dashboard.
+
+## Quick Start
+1. Clone: `git clone https://github.com/[yourusername]/mesothelioma-attorney-app.git`
+2. `cd mesothelioma-attorney-app`
+3. `npm i`
+4. Copy `.env.example` to `.env.local` (add keys: Stripe, SendGrid, WA).
+5. DB: `npx prisma generate && npx prisma db push && npx prisma db seed`
+6. Dev: `npm run dev` → localhost:3000
+7. Build: `npm run build && npm start`
+
+## Features
+- **SEO Funnel**: Meta/OG for "mesothelioma attorney" ranks; sitemap gen.
+- **Leads**: Quiz → Form → DB/email/WhatsApp nurture.
+- **Payments**: Stripe/PayPal upsells; webhooks update status.
+- **Admin**: /admin dashboard (login at /admin/login) for leads/export.
+- **Mobile/PWA**: Android-first, offline support via sw.js.
+
+## Deploy to Vercel
+1. vercel.com → New Project → Import GitHub repo.
+2. Add env vars (from .env.local) in dashboard.
+3. DB: Connect Vercel Postgres → `vercel env pull .env.local`.
+4. Deploy—live URL ready. Add domain: Dashboard → Domains.
+
+## Tech
+- Next.js 14 (App Router)
+- Prisma (SQLite dev, Postgres prod)
+- Tailwind/shadcn UI
+- NextAuth (admin login)
+- Stripe/PayPal/SendGrid/WhatsApp API
+- Socket.io (chat)
+
+License: MIT | Issues? Open one.
