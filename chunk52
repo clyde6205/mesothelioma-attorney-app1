@@ -1,0 +1,15 @@
+#!/bin/bash
+# Deploy to Vercel - run in root dir after npm i
+
+echo "Installing deps..."
+npm i
+
+echo "Building app..."
+npm run build
+
+echo "Deploying to Vercel..."
+npx vercel --prod
+
+echo "Deploy complete! Check https://mesotheliomaattorney-app.vercel.app"
+echo "Add env vars in Vercel dashboard (from .env.example)."
+echo "DB: npx prisma db push (use Vercel Postgres)."
