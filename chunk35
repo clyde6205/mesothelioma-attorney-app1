@@ -1,0 +1,63 @@
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+async function main() {
+  // Mock Lead
+  await prisma.lead.create({
+    data: {
+      name: 'John Doe',
+      email: 'john@example.com',
+      phone: '555-123-4567',
+      state: 'California',
+      exposureType: 'occupational',
+      symptoms: 'chest pain, shortness of breath',
+      riskScore: 18,
+      status: 'NEW',
+      source: 'website',
+      consentGiven: true,
+      whatsappOptIn: true
+    }
+  })
+
+  // Mock Lawyer
+  await prisma.lawyer.create({
+    data: {
+      name: 'Sarah Mitchell',
+      email: 'sarah@lawfirm.com',
+      phone: '555-987-6543',
+      firm: 'Mitchell Law',
+      state: 'California',
+      specialties: ['Mesothelioma', 'Asbestos'],
+      rating: 4.9,
+      casesWon: 150,
+      yearsExperience: 25
+    }
+  })
+
+  // Mock Blog Post
+  await prisma.blogPost.create({
+    data: {
+      slug: 'mesothelioma-guide-2025',
+      title: '2025 Mesothelioma Legal Guide',
+      content: 'Full content here...',
+      excerpt: 'Updated guide for asbestos victims.',
+      published: true,
+      publishedAt: new Date(),
+      metaTitle: '2025 Mesothelioma Guide',
+      metaDescription: 'Learn about your legal rights.'
+    }
+  })
+
+  console.log('Seeding complete!')
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
